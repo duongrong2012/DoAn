@@ -29,10 +29,6 @@ const productRatingSchema = new Schema({
         ]
 
     },
-    likedUsers: [{
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-    }],
 }, {
     versionKey: false,
     timestamps: true,

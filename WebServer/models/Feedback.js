@@ -13,14 +13,14 @@ const FeedbackSchema = new Schema({
     userFeedback: {
         type: String,
         default: '',
-        minlength: [10, 'người dùng phản hồi tối thiểu 10 kí tự'],
-        maxlength: [300, 'người dùng phản hồi tối đa 500 kí tự'],
+        minlength: [10, 'Người dùng phản hồi tối thiểu 10 kí tự'],
+        maxlength: [300, 'Người dùng phản hồi tối đa 500 kí tự'],
     },
     adminResponse: {
         type: String,
         default: '',
-        minlength: [10, 'người quản lý trả lời tối thiểu 10 kí tự'],
-        maxlength: [300, 'người quản lý trả lời tối đa 500 kí tự'],
+        minlength: [10, 'Người quản lý trả lời tối thiểu 10 kí tự'],
+        maxlength: [300, 'Người quản lý trả lời tối đa 500 kí tự'],
     },
 }, {
     versionKey: false,

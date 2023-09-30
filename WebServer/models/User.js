@@ -42,16 +42,16 @@ const userSchema = new Schema({
         get: avatarGetter,
     },
     phone: {
-        type: Number,
-        //validator
+        type: String,
+        maxlength: [15, 'Tên người dùng tối đa 15 kí tự'],
+        default: ""
     },
     address: {
         type: String,
-        //validator
+        maxlength: [100, 'Địa chỉ tối đa 100 kí tự'],
     },
     birthDay: {
         type: Date,
-        //validator
     },
     password: {
         type: String,

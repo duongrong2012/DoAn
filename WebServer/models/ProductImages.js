@@ -6,6 +6,11 @@ function posterGetter(value) {
     return `${process.env.HOST}${value}`
 }
 
+const imageType = {
+    COVER_IMAGE: "COVER_IMAGE",
+    SLIDE_IMAGES: "SLIDE_IMAGES"
+}
+
 const productImageSchema = new Schema({
     url: {
         type: String,
@@ -14,6 +19,10 @@ const productImageSchema = new Schema({
     },
     type: {
         type: String,
+        enum: {
+            values: Object.keys(imageType),
+            message: 'Trạng thái tài khoản không hợp lệ'
+        }
     },
     productId: {
         type: Schema.Types.ObjectId,

@@ -9,18 +9,18 @@ const avatarGetter = (value) => {
     return `${process.env.HOST}${value}`
 }
 
-const Level = {
-    ONE: '1',
-    THREE: '3',
-    Five: '5',
+const adminLevel = {
+    ONE: 1,
+    THREE: 3,
+    Five: 5,
 }
 
 const adminSchema = new Schema({
     level: {
-        type: String,
+        type: Number,
         enum: {
-            values: Object.keys(Gender),
-            message: 'cấp không hợp lệ'
+            values: Object.values(adminLevel),
+            message: 'Cấp không hợp lệ'
         }
     },
     username: {

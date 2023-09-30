@@ -1,14 +1,8 @@
 const { Schema, model } = require('mongoose');
-const yup = require('yup');
 const mongooseLeanGetters = require('mongoose-lean-getters');
-const Category = require('./Category');
-
-function posterGetter(value) {
-    return `${process.env.HOST}${value}`
-}
 
 const orderSchema = new Schema({
-    orderId: {
+    order: {
         type: Schema.Types.ObjectId,
         ref: 'orders',
     },
@@ -22,24 +16,10 @@ const orderSchema = new Schema({
         minlength: [1, 'Tên sản phẩm dùng ít nhất 1 kí tự'],
         maxlength: [50, 'Tên sản phẩm dùng tối đa 50 kí tự'],
         required: [true, 'Tên sản phẩm là bắt buộc'],
-        validate: {
-            message: "Tên sản phẩm đã tồn tại",
-            validator: async (value) => {
-                const isProductExist = await Product.exists({ name: value })
-                return !isProductExist
-            },
-        }
     },
     categories: [{
         type: Schema.Types.ObjectId,
         ref: 'category',
-        validate: {
-            message: "Danh mục không hợp lệ",
-            validator: async (value) => {
-                const isCategoryExist = await Category.exists({ _id: value })
-                return isCategoryExist
-            },
-        }
     }],
     totalRatings: {
         type: Number,
@@ -52,7 +32,7 @@ const orderSchema = new Schema({
     quantity: {
         type: String,
         required: [true, 'Số lượng là bắt buộc'],
-        min: [0, 'Số lượng thấp nhất là 1'],
+        min: [1, 'Số lượng thấp nhất là 1'],
         validate: [
             {
                 message: "Số lượng phải là số nguyên dương",
@@ -63,7 +43,7 @@ const orderSchema = new Schema({
     price: {
         type: String,
         required: [true, 'Giá tiền là bắt buộc'],
-        min: [0, 'Giá tiền thấp nhất là 1'],
+        min: [0, 'Giá tiền thấp nhất là 0'],
         validate: [
             {
                 message: "Giá tiền phải là số nguyên dương",
@@ -76,10 +56,6 @@ const orderSchema = new Schema({
         minlength: [1, 'Mô tả dùng ít nhất 1 kí tự'],
         maxlength: [2000, 'Mô tả dùng tối đa 2000 kí tự'],
         required: [true, 'Mô tả là bắt buộc'],
-    },
-    slug: {
-        type: String,
-        required: [true, 'slug là bắt buộc'],
     },
 }, {
     versionKey: false,

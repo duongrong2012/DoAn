@@ -7,9 +7,8 @@ module.exports.defaultResponse = {
 }
 
 module.exports.accountStatus = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  OTHER: 'OTHER',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
 }
 
 module.exports.jwtOptions = {

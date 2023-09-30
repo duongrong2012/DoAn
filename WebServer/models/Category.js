@@ -19,7 +19,7 @@ const categorySchema = new Schema({
     },
     slug: {
         type: String,
-        required: [true, 'slug là bắt buộc'],
+        required: [true, 'Slug là bắt buộc'],
     },
     parentCategory: {
         type: Schema.Types.ObjectId,
