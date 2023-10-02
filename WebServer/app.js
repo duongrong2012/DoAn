@@ -14,7 +14,11 @@ mongoose.plugin(slug, { lang: "vi", });
 
 dotenv.config();
 
+const indexRouter = require('./routes/index');
+const productRouter = require('./routes/product');
+
 const { jwtOptions, multerErrorMessages, mongooseCastErrorField } = require('./utils/constants');
+const User = require('./models/User');
 
 passport.use(new JwtStrategy(jwtOptions, async function (jwt_payload, done) {
     try {
@@ -52,9 +56,7 @@ app.use(express.static(path.join(__dirname, 'public'))); //_dirname:thu muc hien
 app.use(passport.initialize());
 
 app.use('/', indexRouter);
-app.use('/user', userRouter);
-app.use('/story', storyRouter);
-app.use('/author', authorRouter);
+app.use('/san-pham', productRouter);
 
 app.use((error, req, res, next) => {
     let { message } = error;

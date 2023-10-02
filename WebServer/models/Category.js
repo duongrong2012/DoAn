@@ -25,6 +25,10 @@ const categorySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'categories',
         default: null,
+    },
+    productCount: {
+        type: Number,
+        default: 0
     }
 }, {
     versionKey: false,

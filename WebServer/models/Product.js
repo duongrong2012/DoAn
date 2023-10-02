@@ -2,7 +2,6 @@ const { Schema, model } = require('mongoose');
 const mongooseLeanGetters = require('mongoose-lean-getters');
 const Category = require('./Category');
 
-
 const productSchema = new Schema({
     name: {
         trim: true,
@@ -20,7 +19,7 @@ const productSchema = new Schema({
     },
     categories: [{
         type: Schema.Types.ObjectId,
-        ref: 'category',
+        ref: 'categories',
         validate: {
             message: "Danh mục không hợp lệ",
             validator: async (value) => {
@@ -38,9 +37,9 @@ const productSchema = new Schema({
         default: 0,
     },
     quantity: {
-        type: String,
-        required: [true, 'Số lượng là bắt buộc'],
+        type: Number,
         min: [0, 'Số lượng thấp nhất là 0'],
+        default: 0,
         validate: [
             {
                 message: "Số lượng phải là số nguyên dương",
@@ -49,7 +48,7 @@ const productSchema = new Schema({
         ]
     },
     price: {
-        type: String,
+        type: Number,
         required: [true, 'Giá tiền là bắt buộc'],
         min: [0, 'Giá tiền thấp nhất là 0'],
         validate: [
@@ -64,6 +63,17 @@ const productSchema = new Schema({
         minlength: [1, 'Mô tả dùng ít nhất 1 kí tự'],
         maxlength: [2000, 'Mô tả dùng tối đa 2000 kí tự'],
         required: [true, 'Mô tả là bắt buộc'],
+    },
+    totalSold: {
+        type: Number,
+        min: [0, 'Số lượng bán được thấp nhất là 0'],
+        default: 0,
+        validate: [
+            {
+                message: "Số lượng bán được phải là số nguyên dương",
+                validator: Number.isInteger
+            },
+        ]
     },
     slug: {
         type: String,

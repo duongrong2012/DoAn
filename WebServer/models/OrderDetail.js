@@ -30,7 +30,7 @@ const orderSchema = new Schema({
         default: 0,
     },
     quantity: {
-        type: String,
+        type: Number,
         required: [true, 'Số lượng là bắt buộc'],
         min: [1, 'Số lượng thấp nhất là 1'],
         validate: [
@@ -41,7 +41,7 @@ const orderSchema = new Schema({
         ]
     },
     price: {
-        type: String,
+        type: Number,
         required: [true, 'Giá tiền là bắt buộc'],
         min: [0, 'Giá tiền thấp nhất là 0'],
         validate: [
