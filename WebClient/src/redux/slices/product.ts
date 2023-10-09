@@ -17,7 +17,9 @@ const slice = createSlice({
     initialState,
     reducers: {
         getProducts: (state, { payload }: PayloadAction<{ stateName: string }>) => {
-            state[`${payload.stateName}Loading`] = true;
+            const stateName: keyof InitialState = `${payload.stateName}Loading`;
+
+            state[stateName] = true;
         },
 
         // getProductSuccess: (state, { payload }) => {
