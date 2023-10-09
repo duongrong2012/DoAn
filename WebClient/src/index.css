@@ -11,3 +11,158 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
+* {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+:root {
+  --mainColor: #2798A1;
+  --main-color-hover: #077c86;
+  --chapter-color: #10d43a;
+  --views-color: #4497f8;
+  --likes-color: #FF2E2E;
+  --category-color: #c51d1d;
+  --author-color: #309d3b;
+  --status-color: #0daacc;
+  --follows-color: #4330d4;
+  --light-gray: #aaa;
+  --border-color: #d9d9d9;
+  --light-red: #ed4259;
+  --bold-text: rgba(0, 0, 0, 0.88);
+}
+
+body {
+  margin: 0;
+}
+
+.px150 {
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
+.resolution {
+  max-width: 1200px;
+  min-width: 1200px;
+  margin: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.flexWrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flexOne {
+  display: flex;
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.self-center {
+  display: flex;
+  align-self: center;
+}
+
+.justifyCenter {
+  display: flex;
+  justify-content: center;
+}
+
+.alignCenter {
+  display: flex;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  color: var(--likes-color);
+}
+
+a:hover * {
+  color: var(--likes-color) !important;
+}
+
+.long-content {
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-fill {
+  display: flex;
+  flex: 1;
+}
+
+.author-color {
+  border-color: var(--author-color) !important;
+}
+
+.status-color {
+  border-color: var(--status-color) !important;
+}
+
+.category-color {
+  border-color: var(--category-color) !important;
+}
+
+.chapter-color {
+  color: var(--chapter-color) !important;
+}
+
+.views-color {
+  color: var(--views-color) !important;
+}
+
+.likes-color {
+  color: var(--likes-color) !important
+}
+
+.follows-color {
+  color: var(--follows-color) !important
+}
+
+button {
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.zoom:hover {
+  transform: scale(1.1);
+  transition: 0.3s;
+}

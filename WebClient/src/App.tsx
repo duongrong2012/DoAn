@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 
 import routes from 'constants/routes';
 import store from 'redux/store';
+import NavigationBar from 'components/NavigationBar';
 
 const router = createBrowserRouter(Object.values(routes).map(item => {
   const routeItem = item();
@@ -20,6 +21,7 @@ const router = createBrowserRouter(Object.values(routes).map(item => {
 function App() {
   return (
     <Provider store={store}>
+      <NavigationBar />
       <RouterProvider router={router} />
     </Provider>
   );

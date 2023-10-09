@@ -4,17 +4,18 @@ import { Link } from 'react-router-dom';
 import useAppSelector from 'hooks/useAppSelector';
 import { useDispatch } from 'react-redux';
 import { AppActions } from 'redux/slices/app';
+import { CategoryActions } from 'redux/slices/category';
 
 const HomePage = () => {
   const dispatch = useDispatch()
 
-  const reduxState = useAppSelector((reduxState) => reduxState);
+  const categories = useAppSelector((reduxState) => reduxState.category.categories);
 
   React.useEffect(() => {
-    dispatch(AppActions.setAppState({ name: "Tri" }))
+    dispatch(CategoryActions.getCategories())
   }, [])
 
-  console.log('reduxState > ', reduxState);
+  console.log('reduxState > ', categories);
 
   return (
     <div>

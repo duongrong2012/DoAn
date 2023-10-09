@@ -79,6 +79,10 @@ module.exports.onGetProduct = async (req, res, next) => {
             sort.createdAt = -1 //1:ascending -1:descending
         }
 
+        if (req.query.sort && req.query.sort === 'totalSold') {
+            sort.totalSold = -1 //1:ascending -1:descending
+        }
+
         if (req.query.category) {
             const categories = await Category.find({ slug: req.query.category })
 
