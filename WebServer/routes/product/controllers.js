@@ -4,6 +4,8 @@ const getSlug = require('speakingurl');
 const Product = require('../../models/Product');
 const Category = require('../../models/Category');
 const { createResponse, getPaginationConfig } = require('../../utils/helpers/request');
+const { getFilePath } = require('../../utils/helpers');
+const { ProductImage, imageType } = require('../../models/ProductImage');
 
 module.exports.onCreateCategory = async (req, res, next) => {
     try {
@@ -14,6 +16,10 @@ module.exports.onCreateCategory = async (req, res, next) => {
 
         if (req.body.parentCategory) {
             category.parentCategory = req.body.parentCategory
+        }
+
+        if (req.file) {
+            category.image = getFilePath(req.file)
         }
 
         await Category.create(category)
@@ -27,7 +33,7 @@ module.exports.onCreateCategory = async (req, res, next) => {
 
 module.exports.onGetCategory = async (req, res, next) => {
     try {
-        const categories = await Category.find({})
+        const categories = await Category.find({}).lean({ getters: true })
 
         res.json(createResponse({
             results: categories
@@ -51,6 +57,26 @@ module.exports.onCreateProduct = async (req, res, next) => {
         if (req.body.categories instanceof Array) {
             product.categories = [...new Set(req.body.categories)]
         }
+
+        if (req.files.length !== 4) {
+            res.json(createResponse({
+                message: "số file ảnh phải bằng 4"
+            }))
+            return
+        }
+        const productId = new mongoose.Types.ObjectId()
+
+        product._id = productId
+
+        const promises = req.files.map((item, index) => {
+            const type = index === 0 ? imageType.COVER_IMAGE : imageType.SLIDE_IMAGES
+
+            return ProductImage.create({ productId, type, url: getFilePath(item) })
+        })
+
+        const images = await Promise.all(promises)
+
+        product.images = images.map((item) => item._id)
 
         await Product.validate(product, ["name", "quantity", "price", "description", "slug", "uploader"])
 
@@ -92,6 +118,7 @@ module.exports.onGetProduct = async (req, res, next) => {
         const product = await Product.find(filter)
             .sort(sort)
             .populate("categories")
+            .populate("images")
             .skip((page - 1) * limit)
             .limit(limit)
             .lean({ getters: true })

@@ -79,6 +79,10 @@ const productSchema = new Schema({
         type: String,
         required: [true, 'slug là bắt buộc'],
     },
+    images: [{
+        type: Schema.Types.ObjectId,
+        ref: 'productImages',
+    }],
 }, {
     versionKey: false,
     timestamps: true,

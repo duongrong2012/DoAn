@@ -2,6 +2,10 @@ const { Schema, model } = require('mongoose');
 const yup = require('yup');
 const mongooseLeanGetters = require('mongoose-lean-getters');
 
+function posterGetter(value) {
+    return `${process.env.HOST}${value}`
+}
+
 const categorySchema = new Schema({
     name: {
         trim: true,
@@ -29,6 +33,10 @@ const categorySchema = new Schema({
     productCount: {
         type: Number,
         default: 0
+    },
+    image: {
+        type: String,
+        get: posterGetter,
     }
 }, {
     versionKey: false,

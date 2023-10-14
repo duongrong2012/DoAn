@@ -1,0 +1,31 @@
+.categoryContainer {
+    background-color: white;
+
+    :global {
+        .title {
+            border-bottom: 1px solid rgba(0, 0, 0, .05);
+            height: 3.75rem;
+            padding-left: 10px;
+            align-items: center;
+            ;
+        }
+
+        .body-container {
+            width: 100%;
+            flex-wrap: wrap;
+
+            .item-container {
+                height: 151px;
+                width: calc(100% / 10 - 1.63px);
+                border: 1px solid rgba(0, 0, 0, .05);
+                cursor: pointer;
+
+                .item-image {
+                    height: 84px;
+                    width: 88px;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}

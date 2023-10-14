@@ -11,6 +11,8 @@ const imageType = {
     SLIDE_IMAGES: "SLIDE_IMAGES"
 }
 
+module.exports.imageType = imageType
+
 const productImageSchema = new Schema({
     url: {
         type: String,
@@ -37,4 +39,4 @@ productImageSchema.plugin(mongooseLeanGetters);
 
 const ProductImage = model('productImages', productImageSchema)
 
-module.exports = ProductImage;
+module.exports.ProductImage = ProductImage;

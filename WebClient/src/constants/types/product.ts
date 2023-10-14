@@ -1,4 +1,5 @@
 import { ProductCategory } from "./category";
+import { ProductImages } from "./image";
 
 export interface Product {
     _id: string,
@@ -13,4 +14,5 @@ export interface Product {
     slug: string,
     createdAt: string,
     updatedAt: string,
+    images: ProductImages[],
 }

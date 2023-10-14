@@ -1,0 +1,17 @@
+.productCarouselContainer {
+    :global {
+        .AppCarousel {
+            height: 500px;
+            width: 100%;
+        }
+    }
+}
+
+.images {
+    height: 100%;
+    width: 100%;
+}
+
+.carouselItemContainer {
+    height: 300px;
+}
