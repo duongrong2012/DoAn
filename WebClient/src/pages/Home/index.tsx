@@ -10,6 +10,7 @@ import styles from './style.module.scss';
 import ProductCarousel from 'components/ProductCarousel';
 import { ReduxState } from 'redux/store';
 import Category from 'components/Category';
+import BestSellerProducts from 'components/BestSellerProducts';
 
 const HomePage = () => {
   const dispatch = useDispatch()
@@ -29,8 +30,7 @@ const HomePage = () => {
     <div className={`${styles.homePageContainer} column resolution`}>
       <ProductCarousel products={topFiveProducts} />
       <Category categories={categories} />
-      <div>aaaaaaaa</div>
-      <div>bbbbbbb</div>
+      <BestSellerProducts products={topFiveProducts} />
     </div>
   );
 }
