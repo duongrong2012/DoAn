@@ -1,16 +1,24 @@
 import React from 'react';
 
 import styles from './style.module.scss';
-import { AutoComplete, Badge, Input, Menu } from 'antd';
+import { AutoComplete, Badge, Input } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons'
 import images from 'assets';
+import AuthModal from 'components/AuthModal';
+import { useDispatch } from 'react-redux';
+import { AuthActions } from 'redux/slices/auth';
+import useAppSelector from 'hooks/useAppSelector';
 
-interface Props {
-    children?: React.ReactNode
-}
+export default function NavigationBar() {
 
-export default function NavigationBar({ children }: Props) {
+    const dispatch = useDispatch();
 
+    const user = useAppSelector((reduxState) => reduxState.auth.user);
+
+    const onClickAuthModal = React.useCallback(() => {
+        dispatch(AuthActions.toggleAuthModal())
+    }, [dispatch])
+    console.log(user)
     return (
         <div className={`${styles.navBarContainer}`}>
             <div className='resolution navbar-body flex'>
@@ -20,7 +28,7 @@ export default function NavigationBar({ children }: Props) {
                 >
                     <Input.Search size="large" placeholder="Tìm kiếm sản phẩm" />
                 </AutoComplete>
-                <UserOutlined className='user' />
+                <UserOutlined className='user' onClick={onClickAuthModal} />
                 {(false) ? (
                     <ShoppingCartOutlined className='cart-icon' />
                 ) : (
@@ -29,6 +37,7 @@ export default function NavigationBar({ children }: Props) {
                     </Badge>
                 )}
             </div>
+            <AuthModal />
         </div>
     )
 

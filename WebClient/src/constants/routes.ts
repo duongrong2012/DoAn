@@ -2,6 +2,7 @@ import HomePage from 'pages/Home';
 import LoginPage from 'pages/Login';
 import { Product } from './types/product';
 import { FilterPageParams } from './types';
+import DetailProduct from 'pages/DetailProduct';
 
 const routes = {
   Home: () => ({
@@ -22,7 +23,7 @@ const routes = {
     return {
       path,
       exact: true,
-      Component: HomePage
+      Component: DetailProduct
     }
   },
   FilterPage: (filter: FilterPageParams = {}) => {

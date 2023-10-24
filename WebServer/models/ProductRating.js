@@ -12,8 +12,7 @@ const productRatingSchema = new Schema({
     },
     comment: {
         type: String,
-        default: '',
-        minlength: [10, 'Đánh giá sản phẩm tối thiểu 10 kí tự'],
+        minlength: [1, 'Đánh giá sản phẩm tối thiểu 1 kí tự'],
         maxlength: [300, 'Đánh giá sản phẩm tối đa 500 kí tự'],
     },
     rating: {

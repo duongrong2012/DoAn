@@ -1,0 +1,7 @@
+.authModalContainer {
+    :global {
+        .ant-modal-content {
+            padding-bottom: 40px !important;
+        }
+    }
+}

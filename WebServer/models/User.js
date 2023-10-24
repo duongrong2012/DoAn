@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const sha256 = require('crypto-js/sha256');
 const yup = require('yup');
 const mongooseLeanGetters = require('mongoose-lean-getters');
 const { accountStatus } = require('../utils/constants');
@@ -86,6 +87,14 @@ const userSchema = new Schema({
 }) //khong hien thi version document
 
 userSchema.plugin(mongooseLeanGetters);
+
+userSchema.pre('save', function (next, options) {
+    if (this.isModified('password')) {
+        this.password = sha256(this.password).toString();
+    }
+
+    next();
+});
 
 const User = model('users', userSchema)
 

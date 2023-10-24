@@ -1,0 +1,106 @@
+.detailProductContainer {
+    padding: 10px;
+    gap: 20px;
+
+    :global {
+        .product-detail {
+            gap: 30px;
+            background-color: white;
+
+            .product-images {
+                gap: 15px;
+
+                .product-big-image {
+                    cursor: pointer;
+                    height: 450px;
+                    width: 460px;
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                }
+
+                .product-small-image-list {
+                    gap: 10px;
+                }
+
+                .small-image {
+                    cursor: pointer;
+                    height: 105px;
+                    width: 105px;
+                }
+            }
+
+            .more-product-detail {
+                gap: 20px;
+
+                .product-name {
+                    font-weight: 500;
+                    line-height: 1.5rem;
+                    font-size: 1.25rem;
+                    overflow-wrap: break-word;
+                }
+
+                .product-achievements {
+                    gap: 20px;
+                    font-size: 24px;
+
+                    .product-rating-number {
+                        padding-right: 10px;
+                        filter: invert(83%) sepia(23%) saturate(4912%) hue-rotate(340deg) brightness(100%) contrast(96%);
+                    }
+
+                    .product-total-rating {
+                        border-left: 1px solid rgba(0, 0, 0, 0.1);
+                        padding: 0px 15px;
+                        border-right: 1px solid rgba(0, 0, 0, 0.1);
+                    }
+                }
+
+                .product-price-container {
+                    gap: 1px;
+                    font-size: 24px;
+
+                    .đ {
+                        font-size: 14px !important;
+                        line-height: 25px;
+                    }
+
+                }
+
+                .product-quantity {
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .buy-product-container {
+                    gap: 20px;
+
+                    .add-to-cart {
+                        font-size: 18px;
+                        height: 45px;
+                        width: 225px;
+                        text-align: center;
+                        background: #ffb916;
+                        color: #fff;
+                    }
+
+                    .buy {
+                        font-size: 18px;
+                        height: 45px;
+                        width: 225px;
+                        text-align: center;
+                        background: #f57224;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.productLabel {
+    font-size: 24px;
+    padding-right: 10px;
+}
+
+.currentSmallImageBorder {
+    border: 2px solid #d0011b
+}

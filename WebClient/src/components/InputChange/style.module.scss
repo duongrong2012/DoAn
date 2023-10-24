@@ -1,0 +1,26 @@
+.inputChangeContainer {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    height: 24px;
+
+    :global {
+        .decrease {
+            width: 24px;
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .number {
+            width: 48px;
+            border: 0px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0px;
+            text-align: center;
+        }
+
+        .increase {
+            width: 24px;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+    }
+}

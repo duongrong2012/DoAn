@@ -1,0 +1,14 @@
+.starRatingContainer {
+    gap: 4px;
+    display: flex;
+
+    :global {
+        .star-rating {
+            filter: invert(83%) sepia(23%) saturate(4912%) hue-rotate(340deg) brightness(100%) contrast(96%);
+        }
+    }
+}
+
+.triggerPointer {
+    cursor: pointer;
+}

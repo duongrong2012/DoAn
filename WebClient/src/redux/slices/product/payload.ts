@@ -13,4 +13,13 @@ export interface GetProductsPayload {
 export interface GetProductsSuccessPayload {
   data: Product[];
   stateName: GetProductsPayload["stateName"];
+  page: number | undefined
+}
+
+export interface GetProductDetailPayload {
+  slug: string,
+}
+
+export interface GetProductDetailSucessPayload {
+  data: Product
 }

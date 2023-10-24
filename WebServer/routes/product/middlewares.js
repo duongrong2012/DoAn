@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const multer = require("multer");
 const getSlug = require("speakingurl");
+const Product = require("../../models/Product");
 
 const storage = multer.diskStorage({
     destination: 'public/images/productImages/',
@@ -48,3 +49,22 @@ module.exports.categoryImageMulter = multer({
         cb(null, true);
     },
 });
+
+module.exports.validateProductExist = async (req, res, next) => {
+    try {
+        const isExist = await Product.exists({
+            _id: req.params.id,
+        })
+
+        if (!isExist) {
+            res.status(404).json(createResponse({
+                message: "Sản phẩm không tồn tại"
+            }))
+            return
+        }
+
+        next()
+    } catch (error) {
+        next(error)
+    }
+}

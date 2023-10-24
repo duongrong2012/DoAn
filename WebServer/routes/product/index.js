@@ -1,12 +1,15 @@
 var express = require('express');
+const passport = require('passport');
 
 const {
     onCreateProduct,
     onCreateCategory,
     onGetCategory,
     onGetProduct,
+    onGetProductDetail,
+    onRatingProduct,
 } = require('./controllers');
-const { productImageMulter, categoryImageMulter } = require('./middlewares');
+const { productImageMulter, categoryImageMulter, validateProductExist } = require('./middlewares');
 // const passport = require('passport');
 const router = express.Router();
 
@@ -20,6 +23,7 @@ router.get('/',
     onGetProduct,
 );
 
+
 router.post('/danh-muc',
     // passport.authenticate('jwt', { session: false }),
     categoryImageMulter.single("image"),
@@ -30,5 +34,14 @@ router.get('/danh-muc',
     onGetCategory,
 );
 
+router.get('/:slug',
+    onGetProductDetail,
+);
+
+router.post('/:id/rating',
+    passport.authenticate('jwt', { session: false }),
+    validateProductExist,
+    onRatingProduct,
+);
 
 module.exports = router;

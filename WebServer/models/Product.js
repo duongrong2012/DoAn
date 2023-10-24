@@ -61,7 +61,7 @@ const productSchema = new Schema({
     description: {
         type: String,
         minlength: [1, 'Mô tả dùng ít nhất 1 kí tự'],
-        maxlength: [2000, 'Mô tả dùng tối đa 2000 kí tự'],
+        maxlength: [10000, 'Mô tả dùng tối đa 2000 kí tự'],
         required: [true, 'Mô tả là bắt buộc'],
     },
     totalSold: {

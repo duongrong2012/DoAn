@@ -1,0 +1,39 @@
+.productDescriptionContainer {
+    padding: 25px 20px;
+    background-color: white;
+    gap: 25px;
+
+    :global {
+        .label {
+            font-size: 18px;
+        }
+
+        .body-container {
+            max-height: 150px;
+            overflow: hidden;
+        }
+
+        .expand-button {
+            display: flex;
+            border: 1px solid #1a9cb7;
+            background: #fff;
+            color: #1a9cb7;
+            font-size: 18px;
+            height: 45px;
+            width: 120px;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+
+            &:hover {
+                background: #1a9cb7;
+                color: #fff !important;
+                border: 1px solid #1a9cb7;
+            }
+        }
+    }
+}
+
+.onExpand {
+    max-height: none !important;
+}

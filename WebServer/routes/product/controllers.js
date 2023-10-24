@@ -6,6 +6,7 @@ const Category = require('../../models/Category');
 const { createResponse, getPaginationConfig } = require('../../utils/helpers/request');
 const { getFilePath } = require('../../utils/helpers');
 const { ProductImage, imageType } = require('../../models/ProductImage');
+const ProductRating = require('../../models/ProductRating');
 
 module.exports.onCreateCategory = async (req, res, next) => {
     try {
@@ -131,3 +132,99 @@ module.exports.onGetProduct = async (req, res, next) => {
         next(error)
     }
 };
+
+
+module.exports.onGetProductDetail = async (req, res, next) => {
+    try {
+
+        let query
+
+        //id co the truyen la stor id hoac story slug
+
+        if (mongoose.isObjectIdOrHexString(req.params.slug)) {
+            query = Product.findById(req.params.slug);
+        } else {
+            query = Product.findOne({ slug: req.params.slug })
+        }
+
+        const productDetail = await query
+            .populate("categories")
+            .populate("images")
+            .lean({ getters: true })
+
+        if (!productDetail) {
+            res.status(404).json(createResponse({
+                message: "Id hoặc slug không hợp lệ không hợp lệ",
+            }));
+            return
+        }
+
+        res.json(createResponse({
+            results: productDetail,
+        }))
+
+    } catch (error) {
+        next(error)
+    }
+};
+
+module.exports.onRatingProduct = async (req, res, next) => {
+    try {
+        let productRating = null
+
+        const productRatingFilter = {
+            user: req.user._id,
+            product: req.params.id,
+        }
+
+        const productRatingModel = {
+            user: req.user._id,
+            product: req.params.id,
+            comment: req.body.comment,
+            rating: req.body.rating,
+        }
+
+        const updateRatingModel = {
+            comment: req.body.comment,
+            rating: req.body.rating,
+        }
+
+        const userProductRating = await ProductRating.findOne(productRatingFilter)
+
+        if (!userProductRating) {
+
+            productRating = await (await ProductRating.create(productRatingModel))
+                .populate("user", "avatar fullName gender")
+
+            await Product.updateOne({
+                _id: req.params.id
+            }, {
+                $inc: {
+                    totalRatings: 1,
+                    totalRatingPoints: req.body.rating,
+                }
+            }) //$inc: tang gia tri totallike
+        } else {
+            productRating = await ProductRating.findOneAndUpdate(
+                productRatingFilter,
+                updateRatingModel,
+                { runValidators: true, new: true }, //new:true gia tri sau update
+            ).populate("user", "avatar fullName gender")
+
+            await Product.updateOne({
+                _id: req.params.id
+            }, {
+                $inc: {
+                    totalRatingPoints: req.body.rating - userProductRating.rating, //rating moi tru rating cu
+                }
+            }) //$inc: tang gia tri totallike
+        }
+
+        res.json(createResponse({
+            results: productRating,
+        }))
+
+    } catch (error) {
+        next(error)
+    }
+}
