@@ -1,29 +1,39 @@
 import React from 'react';
 import {
   createBrowserRouter,
+  RouteObject,
   RouterProvider,
 } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import routes from 'constants/routes';
-import store from 'redux/store';
-import NavigationBar from 'components/NavigationBar';
+import MainLayout from 'layouts/MainLayout';
+import { AuthActions } from 'redux/slices/auth';
 
-const router = createBrowserRouter(Object.values(routes).map(item => {
-  const routeItem = item();
+const routeList: RouteObject[] = [{
+  path: "/",
+  Component: MainLayout,
+  children: Object.values(routes).map(item => {
+    const routeItem = item();
 
-  return {
-    path: routeItem.path,
-    Component: routeItem.Component,
-  }
-}));
+    return {
+      path: routeItem.path,
+      Component: routeItem.Component,
+    }
+  })
+}]
+
+const router = createBrowserRouter(routeList);
 
 function App() {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(AuthActions.checkLogin())
+  }, [dispatch])
+
   return (
-    <Provider store={store}>
-      <NavigationBar />
-      <RouterProvider router={router} />
-    </Provider>
+    <RouterProvider router={router} />
   );
 }
 

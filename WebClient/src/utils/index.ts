@@ -1,4 +1,5 @@
 import { notification } from "antd";
+import { OrderStatus } from "constants/types/order";
 import { Gender } from "constants/types/user";
 
 export const apiErrorHandle = (error: any) => {
@@ -18,4 +19,13 @@ export const getGenderLabel = (gender: Gender) => {
         OTHER: 'Khác',
     }
     return GenderLabel[gender]
+}
+
+export const getOrderStatusLabel = (status: OrderStatus) => {
+    const orderStatusLabel = {
+        PROCESSING: 'Đang xử lý',
+        DELIVERING: 'Đang giao hàng',
+        DELIVERED: 'Đã giao',
+    }
+    return orderStatusLabel[status]
 }

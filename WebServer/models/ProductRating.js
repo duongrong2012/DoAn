@@ -26,8 +26,11 @@ const productRatingSchema = new Schema({
                 validator: Number.isInteger
             }
         ]
-
     },
+    likedUsers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+    }]
 }, {
     versionKey: false,
     timestamps: true,

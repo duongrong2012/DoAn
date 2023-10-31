@@ -1,0 +1,95 @@
+.orderDetailPageContainer {
+    gap: 10px;
+
+    :global {
+        .order-list-container {
+            background-color: white;
+            flex: 1;
+            padding: 15px 25px;
+
+            .header-label {
+                font-size: 18px;
+                font-weight: 400;
+                border-bottom: 1px solid #d2cfcf;
+                padding-bottom: 15px;
+            }
+
+            .table-container {
+                margin-top: 15px;
+
+                .name-container {
+                    gap: 5px;
+                    align-items: center;
+
+                    .product-image {
+                        height: 80px;
+                        width: 80px;
+                    }
+
+                    .name {
+                        -webkit-line-clamp: 2 !important;
+                    }
+                }
+            }
+        }
+
+        .order-detail-container {
+            gap: 15px;
+
+            .order-infor-container {
+                background-color: white;
+                width: 500px;
+                padding: 15px 25px;
+                gap: 5px;
+
+                .order-infor-row {
+                    gap: 5px;
+                    font-size: 16px;
+
+                    .order-infor-label {
+                        width: 125px;
+                    }
+
+                    .order-infor-value {
+                        flex: 1;
+                    }
+                }
+            }
+
+            .total-amount-container {
+                background-color: white;
+                padding: 15px 25px;
+                gap: 5px;
+                flex: 1;
+
+                .total-amount-header {
+                    font-size: 18px;
+                }
+
+                .total-amount-row {
+                    gap: 10px;
+
+                    .total-amount-label {
+                        width: 100px;
+                    }
+
+                    .total-amount-value {
+                        flex: 1;
+                    }
+
+                    .money-color {
+                        font-size: 18px;
+                        color: #f57224;
+                        font-weight: 500;
+                        -webkit-line-clamp: 2 !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.borderBottom {
+    padding: 10px 0px;
+    border-bottom: 1px solid #eff0f5;
+}

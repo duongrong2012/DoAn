@@ -228,3 +228,29 @@ module.exports.onRatingProduct = async (req, res, next) => {
         next(error)
     }
 }
+
+module.exports.onGetProductRating = async (req, res, next) => {
+    try {
+        const { page, limit } = getPaginationConfig(req, 1, 10)
+
+        const sort = {
+            createdAt: -1
+        }
+
+        const listRating = await ProductRating.find({
+            product: req.params.id,
+        })
+            .sort(sort)
+            .populate("user", "avatar fullName gender")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .lean({ getters: true })
+
+        res.json(createResponse({
+            results: listRating
+        }))
+
+    } catch (error) {
+        next(error)
+    }
+}

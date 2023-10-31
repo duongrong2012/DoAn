@@ -49,6 +49,7 @@ const userSchema = new Schema({
     },
     address: {
         type: String,
+        default: "",
         maxlength: [100, 'Địa chỉ tối đa 100 kí tự'],
     },
     birthDay: {
@@ -76,6 +77,7 @@ const userSchema = new Schema({
     },
     status: {
         type: String,
+        default: accountStatus.ACTIVE,
         enum: {
             values: Object.keys(accountStatus),
             message: 'Trạng thái tài khoản không hợp lệ'

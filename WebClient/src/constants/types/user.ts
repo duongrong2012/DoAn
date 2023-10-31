@@ -6,6 +6,7 @@ export interface User {
     avatar: string,
     phone: string,
     gender: string,
+    address: string,
     recoveryPasswordCode: string,
     lastLogin: string,
     createdAt: string,

@@ -1,0 +1,121 @@
+.orderPageContainer {
+    gap: 10px;
+
+    :global {
+
+        .shipping-address-container {
+
+            .label {
+                padding: 10px 25px;
+                background-color: #fafafa;
+            }
+
+            .shipping-infor {
+                padding: 10px 25px;
+                background-color: white;
+                gap: 10px;
+
+                .shipping-infor-row {
+                    align-items: center;
+
+                    .shipping-infor-label {
+                        width: 150px;
+                    }
+                }
+            }
+        }
+
+        .body-container {
+            gap: 15px;
+
+            .item-container {
+                padding: 8px 5px;
+                background-color: white;
+                width: 920px;
+
+                gap: 10px;
+
+                .product-image {
+                    height: 80px;
+                    width: 80px;
+                }
+
+                .item-name {
+                    width: 590px;
+                    -webkit-line-clamp: 2 !important;
+                }
+
+                .price {
+                    font-size: 18px;
+                    color: #f57224;
+                    font-weight: 500;
+                    width: 135px;
+                    -webkit-line-clamp: 2 !important;
+                }
+
+                .quantity {
+                    flex: 1;
+
+                    .quantity-prefix {
+                        font-size: 14px;
+                        color: #757575;
+                    }
+
+                    .quantity-value {
+                        font-size: 16px;
+                        color: #202020;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .confirm-order-container {
+                gap: 10px;
+                background-color: white;
+                font-size: 18px;
+                color: #212121;
+                font-weight: 500;
+                flex: 1;
+                padding: 8px 10px;
+
+                .checkout-summary-row {
+                    border-bottom: 1px solid #eff0f5;
+                    padding-bottom: 16px;
+                    align-items: center;
+
+                    .checkout-summary-label {
+                        font-size: 14px;
+                        color: #757575;
+                        width: 100px;
+                    }
+
+                    .checkout-summary-value {
+                        font-size: 16px;
+                        color: #202020;
+                        flex: 1;
+                    }
+                }
+
+                .summary {
+                    .summary-label {
+                        font-size: 16px;
+                        color: #202020;
+                        width: 85px;
+                    }
+
+                    .summary-value {
+                        font-size: 18px;
+                        color: #f57224;
+                        flex: 1;
+                    }
+                }
+
+                .confirm-order-button {
+                    background-color: rgb(245, 114, 36);
+                    font-size: 14px;
+                    color: rgb(255, 255, 255);
+                }
+            }
+        }
+    }
+}

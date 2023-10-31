@@ -2,6 +2,7 @@
     background-color: #231f20;
     color: white;
     height: 100px;
+    margin-bottom: 15px;
 
     :global {
         .navbar-body {
@@ -12,6 +13,7 @@
             .logo {
                 height: 100%;
                 width: 131px;
+                cursor: pointer;
             }
 
             .ant-select {
@@ -34,4 +36,43 @@
             }
         }
     }
+}
+
+.accountContainer {
+    max-width: 246.7px;
+    display: flex;
+    cursor: pointer;
+}
+
+.accountInfo {
+    gap: 10px;
+    max-width: 110px;
+}
+
+.loginContainer {
+    border-radius: 5px;
+    height: 28px;
+    gap: 5px;
+    padding: 5px 14px;
+    border: 1px solid #d9d9d9;
+    transition: color .3s, background-color .3s;
+
+    &:hover {
+        color: #FFFF8A;
+        border: 1px solid #FFFF8A !important;
+    }
+}
+
+.userNameContainer {
+    flex: 1;
+}
+
+.marginIcon {
+    margin-right: 5px;
+}
+
+.icon {
+    margin-right: 5px;
+    height: 14px;
+    width: 14px;
 }

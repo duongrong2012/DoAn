@@ -3,6 +3,10 @@ import LoginPage from 'pages/Login';
 import { Product } from './types/product';
 import { FilterPageParams } from './types';
 import DetailProduct from 'pages/DetailProduct';
+import OrderPage from 'pages/OrderPage';
+import UserOrderListPage from 'pages/UserOrderListPage';
+import { Order } from './types/order';
+import OrderDetailPage from 'pages/OrderDetailPage';
 
 const routes = {
   Home: () => ({
@@ -24,6 +28,37 @@ const routes = {
       path,
       exact: true,
       Component: DetailProduct
+    }
+  },
+  OrderPage: () => {
+    let path = '/dat-hang'
+
+    return {
+      path,
+      exact: true,
+      Component: OrderPage
+    }
+  },
+  OrderDetailPage: (orderId?: Order["_id"]) => {
+    let path = '/chi-tiet-don-hang/:orderId'
+
+    if (orderId) {
+      path = `/chi-tiet-don-hang/${orderId}`
+    }
+
+    return {
+      path,
+      exact: true,
+      Component: OrderDetailPage
+    }
+  },
+  UserOrderListPage: () => {
+    let path = '/quan-ly-don-hang'
+
+    return {
+      path,
+      exact: true,
+      Component: UserOrderListPage
     }
   },
   FilterPage: (filter: FilterPageParams = {}) => {

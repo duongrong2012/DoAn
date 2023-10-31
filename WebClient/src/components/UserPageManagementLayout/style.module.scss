@@ -1,0 +1,35 @@
+.userPageManagementLayout {
+    gap: 25px;
+
+    :global {
+
+        .menu-list {
+            gap: 6px;
+            width: 200px;
+
+            .menu-item-container {
+                gap: 20px;
+                height: 30px;
+                padding: 5px 15px;
+                align-items: center;
+                cursor: pointer;
+                display: flex;
+
+                &:hover {
+                    filter: invert(26%) sepia(97%) saturate(4590%) hue-rotate(351deg) brightness(108%) contrast(106%);
+                }
+
+                .icon {
+                    height: 24px;
+                    width: 24px;
+                }
+            }
+
+            .isSelected {
+                border: 1px solid #d9d9d9;
+                filter: invert(26%) sepia(97%) saturate(4590%) hue-rotate(351deg) brightness(108%) contrast(106%);
+                color: var(--likes-color);
+            }
+        }
+    }
+}

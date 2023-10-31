@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const mongooseLeanGetters = require('mongoose-lean-getters');
 
-const orderSchema = new Schema({
+const orderDetailSchema = new Schema({
     order: {
         type: Schema.Types.ObjectId,
         ref: 'orders',
@@ -14,7 +14,7 @@ const orderSchema = new Schema({
         trim: true,
         type: String,
         minlength: [1, 'Tên sản phẩm dùng ít nhất 1 kí tự'],
-        maxlength: [50, 'Tên sản phẩm dùng tối đa 50 kí tự'],
+        maxlength: [100, 'Tên sản phẩm dùng tối đa 100 kí tự'],
         required: [true, 'Tên sản phẩm là bắt buộc'],
     },
     categories: [{
@@ -54,16 +54,20 @@ const orderSchema = new Schema({
     description: {
         type: String,
         minlength: [1, 'Mô tả dùng ít nhất 1 kí tự'],
-        maxlength: [2000, 'Mô tả dùng tối đa 2000 kí tự'],
+        maxlength: [10000, 'Mô tả dùng tối đa 10000 kí tự'],
         required: [true, 'Mô tả là bắt buộc'],
     },
+    images: [{
+        type: Schema.Types.ObjectId,
+        ref: 'productImages',
+    }],
 }, {
     versionKey: false,
     timestamps: true,
 }) //khong hien thi version document
 
-orderSchema.plugin(mongooseLeanGetters);
+orderDetailSchema.plugin(mongooseLeanGetters);
 
-const Order = model('orders', orderSchema)
+const OrderDetail = model('orderDetails', orderDetailSchema)
 
-module.exports = Order;
+module.exports = OrderDetail;

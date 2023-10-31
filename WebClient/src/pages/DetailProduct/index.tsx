@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import styles from './style.module.scss';
 import { ProductActions } from 'redux/slices/product';
@@ -12,6 +12,11 @@ import RatingStar from 'components/RatingStar';
 import InputChange from 'components/InputChange';
 import { Button } from 'antd';
 import ProductDescription from 'components/ProductDescription';
+import ProductRating from 'components/ProductRating';
+import { RatingActions } from 'redux/slices/rating';
+import { ratingListLimit } from '../../constants';
+import routes from 'constants/routes';
+import { AuthActions } from 'redux/slices/auth';
 
 interface State {
   currentImage: string,
@@ -20,6 +25,8 @@ interface State {
 
 const DetailProduct = () => {
   const dispatch = useDispatch()
+
+  const currentPage = React.useRef(1)
 
   const { slug } = useParams();
 
@@ -30,9 +37,23 @@ const DetailProduct = () => {
 
   const productDetail = useAppSelector((reduxState) => reduxState.product.productDetail);
 
+  const ratingList = useAppSelector((reduxState) => reduxState.rating.ratingList);
+
+  const user = useAppSelector((reduxState) => reduxState.auth.user);
+
   React.useEffect(() => {
     dispatch(ProductActions.getProductDetail({ slug: slug as Product["slug"] }))
   }, [dispatch, slug])
+
+  React.useEffect(() => {
+    if (productDetail) {
+      dispatch(RatingActions.getRating({
+        productId: productDetail._id,
+        page: currentPage.current,
+        limit: ratingListLimit,
+      }))
+    }
+  }, [dispatch, productDetail])
 
   React.useEffect(() => {
     if (productDetail) setState((prevState) => ({ ...prevState, currentImage: productDetail.images[0].url }))
@@ -41,6 +62,16 @@ const DetailProduct = () => {
   const onClickSmallImage = React.useCallback((item: ProductImage) => () => {
     setState((prevState) => ({ ...prevState, currentImage: item.url }))
   }, [])
+
+  const onClickMoreRating = React.useCallback(() => {
+    if (productDetail) {
+      dispatch(RatingActions.getRating({
+        productId: productDetail._id,
+        page: ++currentPage.current,
+        limit: ratingListLimit,
+      }))
+    }
+  }, [dispatch, productDetail])
 
   const ratingNumber = React.useMemo(() => {
     if (productDetail && productDetail.totalRatings > 0) {
@@ -59,6 +90,10 @@ const DetailProduct = () => {
 
     setState((prevState) => ({ ...prevState, productQuantity: quantity }))
   }, [productDetail?.quantity])
+
+  const onClickBuyButton = React.useCallback(() => {
+    dispatch(AuthActions.toggleAuthModal())
+  }, [dispatch])
 
   return (
     <div className={`${styles.detailProductContainer} column resolution`}>
@@ -102,11 +137,18 @@ const DetailProduct = () => {
           </div>
           <div className='buy-product-container flex'>
             <Button className='add-to-cart'>Thêm Vào Giỏ Hàng</Button>
-            <Button className='buy'>Mua Ngay</Button>
+            {user ? (
+              <Link to={routes.OrderPage().path} state={{ products: [{ product: productDetail, quantity: state.productQuantity }] }}>
+                <Button className='buy'>Mua Ngay</Button>
+              </Link>
+            ) : (
+              <Button className='buy' onClick={onClickBuyButton}>Mua Ngay</Button>
+            )}
           </div>
         </div>
       </div>
       <ProductDescription product={productDetail} />
+      <ProductRating ratingList={ratingList} onClickMoreRating={onClickMoreRating} />
     </div>
   );
 }

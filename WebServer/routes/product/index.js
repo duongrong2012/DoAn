@@ -8,6 +8,7 @@ const {
     onGetProduct,
     onGetProductDetail,
     onRatingProduct,
+    onGetProductRating,
 } = require('./controllers');
 const { productImageMulter, categoryImageMulter, validateProductExist } = require('./middlewares');
 // const passport = require('passport');
@@ -36,6 +37,11 @@ router.get('/danh-muc',
 
 router.get('/:slug',
     onGetProductDetail,
+);
+
+router.get('/:id/rating',
+    validateProductExist,
+    onGetProductRating,
 );
 
 router.post('/:id/rating',

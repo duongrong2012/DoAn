@@ -12,6 +12,10 @@ const orderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users',
     },
+    orderDetails: [{
+        type: Schema.Types.ObjectId,
+        ref: 'orderDetails',
+    }],
     deliveryAddress: {
         type: String,
         minlength: [10, 'Địa chỉ giao hàng tối thiểu 10 kí tự'],
@@ -19,6 +23,7 @@ const orderSchema = new Schema({
     },
     status: {
         type: String,
+        default: OrderStatus.PROCESSING,
         enum: {
             values: Object.keys(OrderStatus),
             message: 'Trạng thái đơn hàng không hợp lệ'

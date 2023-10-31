@@ -9,3 +9,7 @@ export const axiosClient = axios.create({
 export enum LocalStorageKey {
     TOKEN = "TOKEN",
 }
+
+export const ratingListLimit = 10
+
+export const orderListLimit = 10
