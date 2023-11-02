@@ -1,22 +1,21 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { GetOrderDetailPayload, GetOrderDetailSuccessPayload, GetOrderPayload, GetOrderSuccessPayload, OrderPayload } from './payload';
+import { GetOrderListPayload, GetOrderListSuccessPayload, GetOrderPayload, GetOrderSuccessPayload, OrderPayload } from './payload';
 import { Order } from 'constants/types/order';
-import { OrderDetail } from 'constants/types/orderDetail';
 
 interface InitialState {
     orderLoading: boolean,
     orderList: Order[],
     getOrderListLoading: boolean,
-    orderDetailList: OrderDetail[],
-    getOrderDetailListLoading: boolean,
+    order: Order | null,
+    getOrderLoading: boolean,
 }
 
 const initialState: InitialState = {
     orderLoading: true,
     orderList: [],
     getOrderListLoading: true,
-    orderDetailList: [],
-    getOrderDetailListLoading: true,
+    order: null,
+    getOrderLoading: true,
 };
 
 const slice = createSlice({
@@ -35,11 +34,11 @@ const slice = createSlice({
             state.orderLoading = false
         },
 
-        getOrder: (state, { payload }: PayloadAction<GetOrderPayload>) => {
+        getOrderList: (state, { payload }: PayloadAction<GetOrderListPayload>) => {
             state.getOrderListLoading = true
         },
 
-        getOrderSuccess: (state, { payload }: PayloadAction<GetOrderSuccessPayload>) => {
+        getOrderListSuccess: (state, { payload }: PayloadAction<GetOrderListSuccessPayload>) => {
             let orderList = payload.data
 
             if (payload.page > 1) {
@@ -51,30 +50,22 @@ const slice = createSlice({
             state.getOrderListLoading = false
         },
 
-        getOrderFail: (state) => {
+        getOrderListFail: (state) => {
             state.getOrderListLoading = false
         },
 
-        getOrderDetail: (state, { payload }: PayloadAction<GetOrderDetailPayload>) => {
-            state.getOrderDetailListLoading = true
+        getOrder: (state, { payload }: PayloadAction<GetOrderPayload>) => {
+            state.getOrderLoading = true
         },
 
-        getOrderDetailSuccess: (state, { payload }: PayloadAction<GetOrderDetailSuccessPayload>) => {
-            let orderDetailList = payload.data
+        getOrderSuccess: (state, { payload }: PayloadAction<GetOrderSuccessPayload>) => {
+            state.order = payload.data
 
-            if (payload.page > 1) {
-                // @ts-ignore
-                state.orderDetailList = [...state.orderDetailList, ...orderDetailList]
-            } else {
-                // @ts-ignore
-                state.orderDetailList = orderDetailList
-            }
-
-            state.getOrderDetailListLoading = false
+            state.getOrderLoading = false
         },
 
-        getOrderDetailFail: (state) => {
-            state.getOrderDetailListLoading = false
+        getOrderFail: (state) => {
+            state.getOrderLoading = false
         },
     },
 });

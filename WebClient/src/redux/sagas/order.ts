@@ -4,10 +4,10 @@ import { axiosClient } from '../../constants'
 import { apiErrorHandle } from '../../utils';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { OrderActions } from 'redux/slices/order';
-import { GetOrderDetailPayload, GetOrderPayload, OrderPayload } from 'redux/slices/order/payload';
+import { GetOrderListPayload, GetOrderPayload, OrderPayload } from 'redux/slices/order/payload';
 import Swal from 'sweetalert2';
 import routes from 'constants/routes';
-// import { push } from 'connected-react-router';
+import { router } from 'App';
 
 function* orderAction({ payload }: PayloadAction<OrderPayload>) {
     try {
@@ -22,7 +22,7 @@ function* orderAction({ payload }: PayloadAction<OrderPayload>) {
             confirmButtonColor: "#00cc44",
         });
 
-        // yield put(push(routes.UserOrderListPage().path))
+        router.navigate(routes.UserOrderListPage().path)
 
     } catch (error) {
         apiErrorHandle(error)
@@ -31,7 +31,7 @@ function* orderAction({ payload }: PayloadAction<OrderPayload>) {
     }
 }
 
-function* getOrderAction({ payload }: PayloadAction<GetOrderPayload>) {
+function* getOrderListAction({ payload }: PayloadAction<GetOrderListPayload>) {
     try {
         const searchParams = new URLSearchParams()
 
@@ -41,9 +41,24 @@ function* getOrderAction({ payload }: PayloadAction<GetOrderPayload>) {
 
         const { data } = yield axiosClient.get(`/dat-hang?${searchParams.toString()}`);
 
-        yield put(OrderActions.getOrderSuccess({
+        yield put(OrderActions.getOrderListSuccess({
             data: data.results,
             page: payload.page,
+        }));
+
+    } catch (error) {
+        apiErrorHandle(error)
+
+        yield put(OrderActions.getOrderListFail());
+    }
+}
+
+function* getOrderAction({ payload }: PayloadAction<GetOrderPayload>) {
+    try {
+        const { data } = yield axiosClient.get(`/dat-hang/chi-tiet-don-hang/${payload.id}`);
+
+        yield put(OrderActions.getOrderSuccess({
+            data: data.results,
         }));
 
     } catch (error) {
@@ -53,30 +68,8 @@ function* getOrderAction({ payload }: PayloadAction<GetOrderPayload>) {
     }
 }
 
-function* getOrderDetailAction({ payload }: PayloadAction<GetOrderDetailPayload>) {
-    try {
-        const searchParams = new URLSearchParams()
-
-        searchParams.set("page", payload.page.toString())
-
-        searchParams.set("limit", payload.limit.toString())
-
-        const { data } = yield axiosClient.get(`/dat-hang/chi-tiet-don-hang/${payload.id}?${searchParams.toString()}`);
-
-        yield put(OrderActions.getOrderDetailSuccess({
-            data: data.results,
-            page: payload.page,
-        }));
-
-    } catch (error) {
-        apiErrorHandle(error)
-
-        yield put(OrderActions.getOrderDetailFail());
-    }
-}
-
 export default function* Order() {
     yield takeEvery(OrderActions.order.type, orderAction);
+    yield takeEvery(OrderActions.getOrderList.type, getOrderListAction);
     yield takeEvery(OrderActions.getOrder.type, getOrderAction);
-    yield takeEvery(OrderActions.getOrderDetail.type, getOrderDetailAction);
 }

@@ -46,7 +46,7 @@ export default function BestSellerProducts() {
                 <div className='title'>Sản Phẩm Bán Chạy</div>
                 <div className='body-container flex'>
                     {topSoldProducts.map((item) => (
-                        <Link className='item-container column' to={routes.ProductDetail(item.slug).path}>
+                        <Link key={item._id} className='item-container column' to={routes.ProductDetail(item.slug).path}>
                             <img className='item-image' alt="" src={item.images[0].url} />
                             <div className='item-infor-container column'>
                                 <div className='item-name long-content'>{item.name}</div>

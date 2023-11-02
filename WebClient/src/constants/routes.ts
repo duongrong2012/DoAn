@@ -7,6 +7,9 @@ import OrderPage from 'pages/OrderPage';
 import UserOrderListPage from 'pages/UserOrderListPage';
 import { Order } from './types/order';
 import OrderDetailPage from 'pages/OrderDetailPage';
+import UserAccountPage from 'pages/UserAccountPage';
+import CartPage from 'pages/CartPage';
+import FilterPage from 'pages/FilterPage';
 
 const routes = {
   Home: () => ({
@@ -36,6 +39,7 @@ const routes = {
     return {
       path,
       exact: true,
+      private: true,
       Component: OrderPage
     }
   },
@@ -49,6 +53,7 @@ const routes = {
     return {
       path,
       exact: true,
+      private: true,
       Component: OrderDetailPage
     }
   },
@@ -58,7 +63,28 @@ const routes = {
     return {
       path,
       exact: true,
+      private: true,
       Component: UserOrderListPage
+    }
+  },
+  UserAccountPage: () => {
+    let path = '/thong-tin-ca-nhan'
+
+    return {
+      path,
+      exact: true,
+      private: true,
+      Component: UserAccountPage
+    }
+  },
+  CartPage: () => {
+    let path = '/gio-hang'
+
+    return {
+      path,
+      exact: true,
+      private: true,
+      Component: CartPage
     }
   },
   FilterPage: (filter: FilterPageParams = {}) => {
@@ -83,7 +109,7 @@ const routes = {
     return {
       path,
       exact: true,
-      Component: HomePage
+      Component: FilterPage
     }
   },
 }

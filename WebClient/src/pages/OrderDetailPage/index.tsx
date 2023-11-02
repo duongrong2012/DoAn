@@ -4,12 +4,9 @@ import styles from './style.module.scss';
 import UserPageManagementLayout from 'components/UserPageManagementLayout';
 import { useDispatch } from 'react-redux';
 import { OrderActions } from 'redux/slices/order';
-import { orderListLimit } from '../../constants';
 import useAppSelector from 'hooks/useAppSelector';
 import { Table } from 'antd';
-import { getQueryStringValue } from 'utils/query';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import useQuery from 'hooks/useQuery';
+import { useParams } from 'react-router-dom';
 import { OrderDetail } from 'constants/types/orderDetail';
 import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
@@ -17,63 +14,34 @@ import moment from 'moment';
 export default function OrderDetailPage() {
     const dispatch = useDispatch()
 
-    const query = useQuery();
-
-    let navigate = useNavigate();
-
     const { orderId } = useParams();
-
-    //  const location = useLocation();
-
-    const { state } = useLocation();
-
-    const { data } = state;
-
-    let totalProducts = 0;
-
-    let totalAmount = 0
 
     const user = useAppSelector((reduxState) => reduxState.auth.user);
 
-    const orderDetailList = useAppSelector((reduxState) => reduxState.order.orderDetailList);
+    const order = useAppSelector((reduxState) => reduxState.order.order);
 
-    const currentPage = React.useMemo(() => {
-        return getQueryStringValue(query, "page", 1)
-    }, [query])
+    const { totalProducts, totalAmount } = React.useMemo(() => {
+        let totalProductValue = 0
 
+        let totalAmountValue = 0
 
-    const pageSize = React.useMemo(() => {
-        return getQueryStringValue(query, "limit", 50)
-    }, [query])
+        order?.orderDetails?.forEach((item) => {
 
+            totalProductValue += item.quantity
 
-    const onChangePagination = React.useCallback((page: number, pageSize: number) => {
-        // updateQueryString(query, navigate, location, { page, limit: pageSize })
-    }, [])
+            totalAmountValue += item.quantity * item.price
+        })
 
-    orderDetailList.map((item) => {
-
-        totalProducts += item.quantity
-
-        totalAmount += item.quantity * item.price
-    })
-
-    React.useEffect(() => {
-        dispatch(OrderActions.getOrder({
-            page: currentPage,
-            limit: orderListLimit,
-        }))
-    }, [currentPage, dispatch])
+        return { totalProducts: totalProductValue, totalAmount: totalAmountValue }
+    }, [order?.orderDetails])
 
     React.useEffect(() => {
         if (orderId) {
-            dispatch(OrderActions.getOrderDetail({
+            dispatch(OrderActions.getOrder({
                 id: orderId,
-                page: currentPage,
-                limit: orderListLimit,
             }))
         }
-    }, [currentPage, dispatch, orderId])
+    }, [dispatch, orderId])
 
     const columns: ColumnsType<OrderDetail> = [
         {
@@ -102,13 +70,13 @@ export default function OrderDetailPage() {
         valueName: orderId
     }, {
         labelName: "Ngày đặt hàng",
-        valueName: moment(data.createdAt).format("DD-MM-YYYY")
+        valueName: moment(order?.createdAt).format("DD-MM-YYYY")
     }, {
         labelName: "Tên người đặt",
         valueName: user?.fullName
     }, {
         labelName: "Địa chỉ giao hàng",
-        valueName: data.deliveryAddress
+        valueName: order?.deliveryAddress
     },
     ]
 
@@ -120,8 +88,9 @@ export default function OrderDetailPage() {
                     <Table
                         className='table-container'
                         columns={columns}
-                        dataSource={orderDetailList}
+                        dataSource={order?.orderDetails}
                         rowKey={(item) => item._id}
+                        pagination={false}
                     />
                 </div>
                 <div className='order-detail-container flex'>

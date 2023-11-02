@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import routes from 'constants/routes';
 import MainLayout from 'layouts/MainLayout';
 import { AuthActions } from 'redux/slices/auth';
+import PrivateRoute from 'components/PrivateRoute';
 
 const routeList: RouteObject[] = [{
   path: "/",
@@ -16,14 +17,22 @@ const routeList: RouteObject[] = [{
   children: Object.values(routes).map(item => {
     const routeItem = item();
 
-    return {
+    const route: RouteObject = {
       path: routeItem.path,
       Component: routeItem.Component,
+    };
+
+    if ((routeItem as any).private) {
+      route.Component = undefined;
+
+      route.element = <PrivateRoute Component={routeItem.Component} />
     }
+
+    return route;
   })
 }]
 
-const router = createBrowserRouter(routeList);
+export const router = createBrowserRouter(routeList);
 
 function App() {
   const dispatch = useDispatch();

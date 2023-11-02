@@ -11,47 +11,39 @@ import { ColumnsType } from 'antd/es/table';
 import { Order, OrderStatus } from 'constants/types/order';
 import { getOrderStatusLabel } from 'utils';
 import { getQueryStringValue } from 'utils/query';
-import { useLocation, useNavigate } from 'react-router-dom';
-import useQuery from 'hooks/useQuery';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import routes from 'constants/routes';
 
 export default function UserOrderListPage() {
     const dispatch = useDispatch()
 
-    const query = useQuery();
-
     const navigate = useNavigate();
 
     const orderList = useAppSelector((reduxState) => reduxState.order.orderList);
 
-    const user = useAppSelector((reduxState) => reduxState.auth.user);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const currentPage = React.useMemo(() => {
-        return getQueryStringValue(query, "page", 1)
-    }, [query])
+        return getQueryStringValue(searchParams, "page", 1)
+    }, [searchParams])
 
 
     const pageSize = React.useMemo(() => {
-        return getQueryStringValue(query, "limit", 50)
-    }, [query])
+        return getQueryStringValue(searchParams, "limit", 20)
+    }, [searchParams])
 
 
     const onChangePagination = React.useCallback((page: number, pageSize: number) => {
-        // updateQueryString(query, navigate, location, { page, limit: pageSize })
-    }, [])
+        setSearchParams({ page: page.toString(), limit: pageSize.toString() })
+    }, [setSearchParams])
 
     React.useEffect(() => {
-        if (user) {
-            dispatch(OrderActions.getOrder({
-                page: currentPage,
-                limit: orderListLimit,
-            }))
-        }
-    }, [currentPage, dispatch, user])
+        dispatch(OrderActions.getOrderList({
+            page: currentPage,
+            limit: orderListLimit,
+        }))
+    }, [currentPage, dispatch])
 
-    // const onRow = React.useCallback((record: any) => {
-
-    // }, [])
 
     const columns: ColumnsType<Order> = [
         {
@@ -103,7 +95,7 @@ export default function UserOrderListPage() {
                     rowKey={(item) => item._id}
                     onRow={(record) => {
                         return {
-                            onClick: (event) => { navigate(routes.OrderDetailPage(record._id).path, { state: { data: record } }) }, // click row
+                            onClick: (event) => { navigate(routes.OrderDetailPage(record._id).path) }, // click row
                         };
                     }}
                     pagination={{
@@ -111,7 +103,7 @@ export default function UserOrderListPage() {
                         current: currentPage,
                         total: orderList.length ?? 0,
                         pageSize: pageSize,
-                        pageSizeOptions: [50, 100, 1],
+                        pageSizeOptions: [20, 50, 1],
                         showSizeChanger: true,
                         onChange: onChangePagination,
                     }}

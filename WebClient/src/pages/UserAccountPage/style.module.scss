@@ -1,0 +1,71 @@
+.userAccountPageContainer {
+    flex: 1;
+    background-color: white;
+    padding: 15px 25px;
+
+    :global {
+        .container-label {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .row-container {
+            gap: 25px;
+            padding-top: 25px;
+
+            .body-container {
+                gap: 20px;
+                width: 600px;
+
+                .item-container {
+                    gap: 20px;
+
+                    .item-label {
+                        width: 110px;
+                    }
+
+                    .component-container {
+                        flex: 1;
+
+                        .custon-select {
+                            width: 100% !important;
+                        }
+                    }
+                }
+            }
+
+            .changeAvatarTabContainer {
+                gap: 10px;
+                margin-bottom: 15px;
+                padding-left: 25px;
+                border-left: 0.0625rem solid #efefef;
+
+                .descrip {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        .save-button {
+            margin-top: 15px;
+            color: #fff;
+            background: #ee4d2d;
+            height: 80px;
+            width: 80px;
+            align-self: center;
+            height: 45px;
+            width: 80px;
+
+            &:hover {
+                color: white !important;
+                background: #f05d40;
+                border-color: unset !important;
+            }
+        }
+    }
+}
+
+.customBorder {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0deda;
+}

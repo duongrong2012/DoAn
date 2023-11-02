@@ -11,6 +11,7 @@ import useAppSelector from 'hooks/useAppSelector';
 import { getHeaderItem } from './constantHeader';
 import routes from 'constants/routes';
 import { Link, useNavigate } from 'react-router-dom';
+import { CartActions } from 'redux/slices/cart';
 
 
 export default function NavigationBar() {
@@ -21,6 +22,8 @@ export default function NavigationBar() {
 
     const user = useAppSelector((reduxState) => reduxState.auth.user);
 
+    const cartList = useAppSelector((reduxState) => reduxState.cart.cartList);
+
     const onClickAuthModal = React.useCallback(() => {
         dispatch(AuthActions.toggleAuthModal())
     }, [dispatch])
@@ -28,7 +31,17 @@ export default function NavigationBar() {
     const onClickDropdownItem = React.useCallback((item: any) => {
         if (item.key === "logOut") dispatch(AuthActions.checkLogOut())
         if (item.key === "order") navigate(routes.UserOrderListPage().path)
-    }, [dispatch])
+        if (item.key === "Trang Cá Nhân") navigate(routes.UserAccountPage().path)
+    }, [dispatch, navigate])
+
+    React.useEffect(() => {
+        if (user) {
+            dispatch(CartActions.getCartList({
+                page: 1,
+                limit: 999,
+            }))
+        }
+    }, [dispatch, user])
 
     return (
         <div className={`${styles.navBarContainer}`}>
@@ -58,9 +71,11 @@ export default function NavigationBar() {
                 {(false) ? (
                     <ShoppingCartOutlined className='cart-icon' />
                 ) : (
-                    <Badge count={99}>
-                        <ShoppingCartOutlined className='cart-icon' />
-                    </Badge>
+                    <Link to={routes.CartPage().path}>
+                        <Badge count={cartList.length}>
+                            <ShoppingCartOutlined className='cart-icon' />
+                        </Badge>
+                    </Link>
                 )}
             </div>
             <AuthModal />

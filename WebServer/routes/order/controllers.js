@@ -91,19 +91,13 @@ module.exports.onGetOrderList = async (req, res, next) => {
 
 module.exports.onGetOrderDetail = async (req, res, next) => {
     try {
-        const { page, limit } = getPaginationConfig(req, 1, 10)
-        console.log("aaaaaaa")
-        const sort = {}
-
-        const filter = {
-            order: req.params.id
-        }
-
-        const orderDetails = await OrderDetail.find(filter)
-            .sort(sort)
-            .populate("images")
-            .skip((page - 1) * limit)
-            .limit(limit)
+        const orderDetails = await Order.findById(req.params.id)
+            .populate({
+                path: "orderDetails",
+                populate: {
+                    path: 'images',
+                }
+            })
             .lean({ getters: true })
 
         res.json(createResponse({

@@ -1,0 +1,36 @@
+.cartPageContainer {
+    background-color: white;
+    flex: 1;
+    padding: 15px 25px;
+
+    :global {
+        .header-label {
+            font-size: 18px;
+            font-weight: 400;
+            border-bottom: 1px solid #d2cfcf;
+            padding-bottom: 15px;
+        }
+
+        .table-container {
+            margin-top: 15px;
+
+            .name-container {
+                gap: 5px;
+                align-items: center;
+
+                .product-image {
+                    height: 80px;
+                    width: 80px;
+                }
+
+                .name {
+                    -webkit-line-clamp: 2 !important;
+                }
+            }
+
+            .money-color {
+                color: #f57224;
+            }
+        }
+    }
+}

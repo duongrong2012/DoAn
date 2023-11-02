@@ -10,6 +10,17 @@ const cartProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'products',
     },
+    quantity: {
+        type: Number,
+        min: [0, 'Số lượng thấp nhất là 0'],
+        default: 0,
+        validate: [
+            {
+                message: "Số lượng phải là số nguyên dương",
+                validator: Number.isInteger
+            },
+        ]
+    },
 }, {
     versionKey: false,
     timestamps: true,
@@ -17,6 +28,6 @@ const cartProductSchema = new Schema({
 
 cartProductSchema.plugin(mongooseLeanGetters);
 
-const cartProduct = model('cartProducts', cartProductSchema)
+const CartProduct = model('cartProducts', cartProductSchema)
 
-module.exports = cartProduct;
+module.exports = CartProduct;

@@ -29,3 +29,12 @@ export const getOrderStatusLabel = (status: OrderStatus) => {
     }
     return orderStatusLabel[status]
 }
+
+export const readFile = (file: File) => {
+    return new Promise<FileReader>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader);
+        reader.onerror = error => reject(error);
+    });
+}

@@ -17,7 +17,7 @@ export default function UserPageManagementLayout({ children }: Props) {
 
     const items = React.useMemo(() => [{
         icon: <UserOutlined style={{ fontSize: "24px" }} />,
-        link: "google.com",
+        link: routes.UserAccountPage().path,
         text: "Cá nhân",
     }, {
         icon: <img alt="" src={images.order} className='icon' />,
@@ -36,6 +36,12 @@ export default function UserPageManagementLayout({ children }: Props) {
 
                     if (item.link === routes.UserOrderListPage().path
                         && location.pathname.includes(routes.UserOrderListPage().path)
+                    ) {
+                        isSelected = true
+                    }
+
+                    if (item.link === routes.UserAccountPage().path
+                        && location.pathname.includes(routes.UserAccountPage().path)
                     ) {
                         isSelected = true
                     }

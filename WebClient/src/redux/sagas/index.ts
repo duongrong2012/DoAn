@@ -7,6 +7,7 @@ import product from './product';
 import auth from './auth';
 import rating from './rating';
 import order from './order';
+import cart from './cart';
 
 export default function* rootSaga() {
   yield all([
@@ -16,6 +17,7 @@ export default function* rootSaga() {
     fork(auth),
     fork(rating),
     fork(order),
+    fork(cart),
   ]);
 }
 

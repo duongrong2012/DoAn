@@ -43,9 +43,13 @@ const userSchema = new Schema({
         get: avatarGetter,
     },
     phone: {
+        type: Number,
         type: String,
-        maxlength: [15, 'Tên người dùng tối đa 15 kí tự'],
-        default: ""
+        required: [true, 'mongoose_error.model.user.phone_required'],
+        validate: {
+            message: () => 'mongoose_error.model.user.phone_length',
+            validator: (value) => value.length === 10,
+        },
     },
     address: {
         type: String,

@@ -1,5 +1,4 @@
 import { Order } from "constants/types/order"
-import { OrderDetail } from "constants/types/orderDetail"
 import { Product } from "constants/types/product"
 
 export interface OrderPayload {
@@ -10,23 +9,20 @@ export interface OrderPayload {
     }]
 }
 
-export interface GetOrderPayload {
+export interface GetOrderListPayload {
     page: number,
     limit: number,
 }
 
-export interface GetOrderSuccessPayload {
+export interface GetOrderListSuccessPayload {
     data: Order[],
     page: number,
 }
 
-export interface GetOrderDetailPayload {
+export interface GetOrderPayload {
     id: Order["_id"],
-    page: number,
-    limit: number,
 }
 
-export interface GetOrderDetailSuccessPayload {
-    data: OrderDetail[],
-    page: number,
+export interface GetOrderSuccessPayload {
+    data: Order,
 }

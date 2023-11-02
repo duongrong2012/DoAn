@@ -18,6 +18,7 @@ const indexRouter = require('./routes/index');
 const productRouter = require('./routes/product');
 const userRouter = require('./routes/user');
 const orderRouter = require('./routes/order');
+const cartRouter = require('./routes/cart');
 
 const { jwtOptions, multerErrorMessages, mongooseCastErrorField } = require('./utils/constants');
 const User = require('./models/User');
@@ -61,6 +62,7 @@ app.use('/', indexRouter);
 app.use('/san-pham', productRouter);
 app.use('/nguoi-dung', userRouter);
 app.use('/dat-hang', orderRouter);
+app.use('/gio-hang', cartRouter);
 
 app.use((error, req, res, next) => {
     let { message } = error;

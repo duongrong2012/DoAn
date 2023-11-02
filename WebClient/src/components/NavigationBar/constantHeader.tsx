@@ -6,7 +6,7 @@ import images from 'assets';
 
 export const getHeaderItem = (routes: any) => [
     {
-        key: '1',
+        key: 'Trang Cá Nhân',
         label: (
             <div>
                 <UserOutlined className={styles.marginIcon} />

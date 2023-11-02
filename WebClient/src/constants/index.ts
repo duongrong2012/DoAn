@@ -13,3 +13,5 @@ export enum LocalStorageKey {
 export const ratingListLimit = 10
 
 export const orderListLimit = 10
+
+export const dateFormat = 'YYYY/MM/DD';

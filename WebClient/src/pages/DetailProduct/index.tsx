@@ -17,6 +17,7 @@ import { RatingActions } from 'redux/slices/rating';
 import { ratingListLimit } from '../../constants';
 import routes from 'constants/routes';
 import { AuthActions } from 'redux/slices/auth';
+import { CartActions } from 'redux/slices/cart';
 
 interface State {
   currentImage: string,
@@ -85,7 +86,8 @@ const DetailProduct = () => {
 
     if (quantity > (productDetail?.quantity ?? 0)) {
       setState((prevState) => ({ ...prevState, productQuantity: productDetail?.quantity ?? 0 }))
-      return
+    } else {
+
     }
 
     setState((prevState) => ({ ...prevState, productQuantity: quantity }))
@@ -94,6 +96,12 @@ const DetailProduct = () => {
   const onClickBuyButton = React.useCallback(() => {
     dispatch(AuthActions.toggleAuthModal())
   }, [dispatch])
+
+  const onClickAddCartProduct = React.useCallback(() => {
+    if (productDetail) {
+      dispatch(CartActions.addCartProductList({ product: productDetail._id, quantity: state.productQuantity, isToggleAllert: true }))
+    }
+  }, [dispatch, productDetail, state.productQuantity])
 
   return (
     <div className={`${styles.detailProductContainer} column resolution`}>
@@ -136,7 +144,7 @@ const DetailProduct = () => {
             <div className='product-available'>{productDetail?.quantity} sản phẩm có sẵn</div>
           </div>
           <div className='buy-product-container flex'>
-            <Button className='add-to-cart'>Thêm Vào Giỏ Hàng</Button>
+            <Button className='add-to-cart' onClick={onClickAddCartProduct}>Thêm Vào Giỏ Hàng</Button>
             {user ? (
               <Link to={routes.OrderPage().path} state={{ products: [{ product: productDetail, quantity: state.productQuantity }] }}>
                 <Button className='buy'>Mua Ngay</Button>
