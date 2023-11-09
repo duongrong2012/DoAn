@@ -7,6 +7,7 @@ export interface GetUserInforsSuccessPayload {
 export interface RegisterPayload {
     username: string,
     email: string,
+    phone: string,
     fullName: string,
     password: string,
     gender: string,

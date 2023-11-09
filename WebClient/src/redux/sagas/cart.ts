@@ -3,7 +3,7 @@ import { put, takeEvery } from 'redux-saga/effects';
 import { axiosClient } from '../../constants'
 import { apiErrorHandle } from '../../utils';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { AddCartProductListPayload, GetCartListPayload } from 'redux/slices/cart/payload';
+import { AddCartProductListPayload, DeleteCartProductListPayload, GetCartListPayload } from 'redux/slices/cart/payload';
 import { CartActions } from 'redux/slices/cart';
 import Swal from 'sweetalert2';
 
@@ -53,8 +53,21 @@ function* addCartProductAction({ payload }: PayloadAction<AddCartProductListPayl
     }
 }
 
+function* deleteCartProductListAction({ payload }: PayloadAction<DeleteCartProductListPayload>) {
+    try {
+        yield axiosClient.delete(`/gio-hang`, { data: payload });
+
+        yield put(CartActions.deleteCartProductListSuccess(payload))
+
+    } catch (error) {
+        apiErrorHandle(error)
+
+        yield put(CartActions.deleteCartProductListFail());
+    }
+}
 
 export default function* Cart() {
     yield takeEvery(CartActions.getCartList.type, getCartListAction);
     yield takeEvery(CartActions.addCartProductList.type, addCartProductAction);
+    yield takeEvery(CartActions.deleteCartProductList.type, deleteCartProductListAction);
 }

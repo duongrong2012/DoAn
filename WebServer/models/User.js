@@ -43,13 +43,9 @@ const userSchema = new Schema({
         get: avatarGetter,
     },
     phone: {
-        type: Number,
         type: String,
-        required: [true, 'mongoose_error.model.user.phone_required'],
-        validate: {
-            message: () => 'mongoose_error.model.user.phone_length',
-            validator: (value) => value.length === 10,
-        },
+        minlength: [10, 'Số điện thoại phải có độ dài là 10 kí tự'],
+        maxlength: [10, 'Số điện thoại phải có độ dài là 10 kí tự'],
     },
     address: {
         type: String,
@@ -61,7 +57,7 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        minlength: [6, 'Mật khẩu tối thiểu 6 kí tự'],
+        minlength: [8, 'Mật khẩu tối thiểu 8 kí tự'],
         required: [true, 'Mật khẩu là bắt buộc'],
     },
     gender: {
@@ -94,8 +90,16 @@ const userSchema = new Schema({
 
 userSchema.plugin(mongooseLeanGetters);
 
+const passwordRegExp = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/
+
 userSchema.pre('save', function (next, options) {
     if (this.isModified('password')) {
+
+        if (!passwordRegExp.test(this.password)) {
+            next(new Error('Mật khẩu phải có ít nhất 1 kí tự ghi hoa, 1 kí tự đặc biệt, 1 kí tự số và phải có độ dài tối thiểu 8 kí tự'))
+            return
+        }
+
         this.password = sha256(this.password).toString();
     }
 

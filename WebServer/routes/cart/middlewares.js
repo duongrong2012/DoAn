@@ -33,7 +33,7 @@ module.exports.validateProductExist = async (req, res, next) => {
     }
 }
 
-module.exports.validateProductExistInCart = async (req, res, next) => {
+module.exports.validateProductCart = async (req, res, next) => {
     try {
         const isExist = await CartProduct.exists({
             product: req.body.product,
@@ -51,3 +51,4 @@ module.exports.validateProductExistInCart = async (req, res, next) => {
         next(error)
     }
 }
+

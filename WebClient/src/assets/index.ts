@@ -5,6 +5,7 @@ import fullName from './fullName.png'
 import padLock from './padLock.png'
 import whiteUser from './whiteUser.png'
 import order from './order.png'
+import phoneNumber from './phoneNumber.png'
 
 const images = {
     logo,
@@ -14,6 +15,7 @@ const images = {
     padLock,
     whiteUser,
     order,
+    phoneNumber,
 }
 
 export default images

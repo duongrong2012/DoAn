@@ -1,4 +1,7 @@
+const { Error } = require("mongoose");
 const multer = require("multer");
+
+const requestedIPs = {}
 
 const storage = multer.diskStorage({
     destination: 'public/images/user_avatar/',
@@ -27,3 +30,42 @@ module.exports.userAvatarMulter = multer({
         cb(null, true);
     },
 });
+
+module.exports.checkBruteForceAttack = async (req, res, next) => {
+
+    if (!requestedIPs[req.ip]) {
+        requestedIPs[req.ip] = {
+            firstTimeAttempt: Date.now(),
+            count: 1,
+        }
+        next(new Error('Sai tên tài khoản hoặc mật khẩu'))
+        return
+    }
+
+    requestedIPs[req.ip].count += 1
+
+    const isInAttemptTime = (Date.now() - requestedIPs[req.ip].firstTimeAttempt) <= 15000
+
+    if (isInAttemptTime && requestedIPs[req.ip].count > 3) {
+        requestedIPs[req.ip].startedBanTime = Date.now()
+
+        next(new Error('Xin vui lòng thử lại sau'))
+        return
+    }
+
+    const isInBannedTime = (Date.now() - requestedIPs[req.ip].startedBanTime) <= 180000
+
+    if (isInBannedTime) {
+        next(new Error('Xin vui lòng thử lại sau'))
+        return
+    }
+
+    requestedIPs[req.ip].count = 1
+
+    requestedIPs[req.ip].firstTimeAttempt = Date.now()
+
+    next(new Error('Sai tên tài khoản hoặc mật khẩu'))
+}
+
+
+

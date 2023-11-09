@@ -36,14 +36,14 @@ const slice = createSlice({
             state.authLoading = true
         },
 
-        getgetUserInforSuccess: (state, { payload }: PayloadAction<GetUserInforsSuccessPayload>) => {
+        getUserInforSuccess: (state, { payload }: PayloadAction<GetUserInforsSuccessPayload>) => {
             state.authLoading = false
             state.isModalOpen = false
             state.user = payload.data
             state.checkLoginLoading = false
         },
 
-        getgetUserInforFailure: (state) => {
+        getUserInforFailure: (state) => {
             state.authLoading = false
             state.checkLoginLoading = false
         },

@@ -24,8 +24,8 @@ export default function AuthModal() {
         dispatch(AuthActions.login({ username, password }))
     }, [dispatch])
 
-    const onRegister = React.useCallback<RegisterTabProps['onRegister']>((username, password, email, fullName, gender) => {
-        dispatch(AuthActions.register({ username, password, email, fullName, gender }))
+    const onRegister = React.useCallback<RegisterTabProps['onRegister']>((username, password, email, phone, fullName, gender) => {
+        dispatch(AuthActions.register({ username, password, email, phone, fullName, gender }))
     }, [dispatch])
 
     const authTab = React.useMemo(() => {

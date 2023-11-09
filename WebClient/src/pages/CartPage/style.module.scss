@@ -2,35 +2,105 @@
     background-color: white;
     flex: 1;
     padding: 15px 25px;
+    gap: 15px;
 
     :global {
-        .header-label {
-            font-size: 18px;
-            font-weight: 400;
-            border-bottom: 1px solid #d2cfcf;
-            padding-bottom: 15px;
+        .body-container {
+            .header-label {
+                font-size: 18px;
+                font-weight: 400;
+                border-bottom: 1px solid #d2cfcf;
+                padding-bottom: 15px;
+            }
+
+            .table-container {
+                margin-top: 15px;
+
+                .name-container {
+                    gap: 5px;
+                    align-items: center;
+
+                    .product-image {
+                        height: 80px;
+                        width: 80px;
+                    }
+
+                    .name {
+                        -webkit-line-clamp: 2 !important;
+                    }
+                }
+
+                .money-color {
+                    color: #f57224;
+                }
+            }
         }
 
-        .table-container {
-            margin-top: 15px;
+        .confirm-order-container {
+            gap: 10px;
+            background-color: white;
+            font-size: 18px;
+            color: #212121;
+            font-weight: 500;
+            flex: 1;
+            padding: 25px 40px;
+            border: 1px solid #eff0f5;
+            font-size: 24px;
 
-            .name-container {
-                gap: 5px;
+            .checkout-summary-row {
+                border-bottom: 1px solid #eff0f5;
+                padding-bottom: 16px;
                 align-items: center;
 
-                .product-image {
-                    height: 80px;
-                    width: 80px;
+                .checkout-summary-label {
+                    font-size: 14px;
+                    color: #757575;
+                    width: 100px;
                 }
 
-                .name {
-                    -webkit-line-clamp: 2 !important;
+                .checkout-summary-value {
+                    font-size: 16px;
+                    color: #202020;
+                    flex: 1;
                 }
             }
 
-            .money-color {
-                color: #f57224;
+            .summary {
+                .summary-label {
+                    font-size: 16px;
+                    color: #202020;
+                    width: 85px;
+                }
+
+                .summary-value {
+                    font-size: 18px;
+                    color: #f57224;
+                    flex: 1;
+                }
             }
+
+            .confirm-order-button {
+                background-color: rgb(245, 114, 36);
+                font-size: 14px;
+                color: rgb(255, 255, 255);
+                align-self: center;
+                height: 45px;
+                width: 120px;
+                font-size: 16px;
+
+                &:hover {
+                    background: #f05d40;
+                    color: white;
+                    border-color: unset !important;
+                }
+            }
+        }
+
+        .delete-button {
+            height: 45px;
+            width: 205px;
+            align-self: center;
+            font-size: 16px;
         }
     }
 }

@@ -56,3 +56,21 @@ module.exports.onGetProduct = async (req, res, next) => {
         next(error)
     }
 };
+
+module.exports.onDeleteProduct = async (req, res, next) => {
+    try {
+        const filter = {
+            user: req.user._id,
+            product: req.body.products,
+        }
+
+        await CartProduct.deleteMany(filter)
+
+        res.json(createResponse({
+            message: "Xóa thành công"
+        }))
+
+    } catch (error) {
+        next(error)
+    }
+};

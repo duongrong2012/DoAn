@@ -21,3 +21,9 @@ export interface AddCartProductListSuccessPayload {
     product: Product["_id"],
     quantity: number,
 }
+export interface DeleteCartProductListPayload {
+    products: Product["_id"][]
+}
+export interface DeleteCartProductListSuccessPayload {
+    products: Product["_id"][]
+}

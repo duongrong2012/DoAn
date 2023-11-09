@@ -5,7 +5,7 @@ import UserPageManagementLayout from 'components/UserPageManagementLayout';
 import { useDispatch } from 'react-redux';
 import { orderListLimit } from '../../constants';
 import useAppSelector from 'hooks/useAppSelector';
-import { Checkbox, Table } from 'antd';
+import { Button, Checkbox, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Order, OrderStatus } from 'constants/types/order';
 import { getOrderStatusLabel } from 'utils';
@@ -19,7 +19,6 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import InputChange from 'components/InputChange';
 
 interface State {
-    checkList: Cart["_id"][],
     checkListData: Cart[],
     checkTest: boolean,
 }
@@ -34,7 +33,6 @@ export default function CartPage() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [state, setState] = React.useState<State>({
-        checkList: [],
         checkListData: [],
         checkTest: false,
     })
@@ -43,10 +41,31 @@ export default function CartPage() {
         return getQueryStringValue(searchParams, "page", 1)
     }, [searchParams])
 
-
     const pageSize = React.useMemo(() => {
         return getQueryStringValue(searchParams, "limit", 20)
     }, [searchParams])
+
+    const { totalProducts, totalAmount } = React.useMemo(() => {
+        let totalProductValue = 0
+
+        let totalAmountValue = 0
+
+        state.checkListData.forEach((item) => {
+
+            totalProductValue += item.quantity
+
+            totalAmountValue += item.quantity * item.product.price
+        })
+
+        return { totalProducts: totalProductValue, totalAmount: totalAmountValue }
+    }, [state.checkListData])
+
+    const products = React.useMemo(() => {
+        return state.checkListData.map((item) => ({
+            product: item.product,
+            quantity: item.quantity
+        }))
+    }, [state.checkListData])
 
     React.useEffect(() => {
         dispatch(CartActions.getCartList({
@@ -107,6 +126,19 @@ export default function CartPage() {
 
     }, [dispatch])
 
+    const onClickDeleteCartProduct = React.useCallback(() => {
+        const productIdList = state.checkListData.map((item) => item.product._id)
+
+        dispatch(CartActions.deleteCartProductList({
+            products: productIdList,
+        }))
+
+    }, [dispatch, state.checkListData])
+
+    const onclickConfirmOrder = React.useCallback(() => {
+        navigate(routes.OrderPage().path, { state: { products } })
+    }, [navigate, products])
+
     const columns: ColumnsType<Cart> = [
         {
             title:
@@ -137,22 +169,44 @@ export default function CartPage() {
     return (
         <UserPageManagementLayout>
             <div className={`${styles.cartPageContainer} column`}>
-                <div className='header-label'>Giỏ Hàng Của Tôi</div>
-                <Table
-                    className='table-container'
-                    columns={columns}
-                    dataSource={cartList}
-                    rowKey={(item) => item._id}
-                    pagination={{
-                        showQuickJumper: true,
-                        current: currentPage,
-                        total: cartList.length ?? 0,
-                        pageSize: pageSize,
-                        pageSizeOptions: [20, 50, 1],
-                        showSizeChanger: true,
-                        onChange: onChangePagination,
-                    }}
-                />
+                <div className='body-container column'>
+                    <div className='header-label'>Giỏ Hàng Của Tôi</div>
+                    <Table
+                        className='table-container'
+                        columns={columns}
+                        dataSource={cartList}
+                        rowKey={(item) => item._id}
+                        pagination={{
+                            showQuickJumper: true,
+                            current: currentPage,
+                            total: cartList.length ?? 0,
+                            pageSize: pageSize,
+                            pageSizeOptions: [20, 50, 1],
+                            showSizeChanger: true,
+                            onChange: onChangePagination,
+                        }}
+                    />
+                </div>
+                <Button
+                    disabled={state.checkListData.length === 0}
+                    className='delete-button'
+                    danger
+                    onClick={onClickDeleteCartProduct}
+                >
+                    Xóa các sản phẩm đã chọn
+                </Button>
+                <div className='confirm-order-container column'>
+                    <div className='confirm-order-label'>Thông tin đơn hàng</div>
+                    <div className='checkout-summary-row flex'>
+                        <div className='checkout-summary-label'>Tổng sản phẩm</div>
+                        <div className='checkout-summary-value'>{totalProducts}</div>
+                    </div>
+                    <div className='summary flex'>
+                        <div className='summary-label'>Tổng cộng</div>
+                        <div className='summary-value'>₫ {totalAmount}</div>
+                    </div>
+                    <Button className='confirm-order-button' onClick={onclickConfirmOrder}>Đặt Hàng</Button>
+                </div>
             </div >
         </UserPageManagementLayout>
     )

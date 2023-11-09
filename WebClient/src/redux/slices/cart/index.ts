@@ -1,17 +1,19 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { AddCartProductListPayload, AddCartProductListSuccessPayload, GetCartListPayload, GetCartListSuccessPayload } from './payload';
+import { AddCartProductListPayload, AddCartProductListSuccessPayload, DeleteCartProductListPayload, DeleteCartProductListSuccessPayload, GetCartListPayload, GetCartListSuccessPayload } from './payload';
 import { Cart } from 'constants/types/cart';
 
 interface InitialState {
     cartList: Cart[],
     cartListLoading: boolean,
     addCartProductLoading: boolean,
+    deleteCartProductListLoading: boolean,
 }
 
 const initialState: InitialState = {
     cartList: [],
     cartListLoading: true,
     addCartProductLoading: true,
+    deleteCartProductListLoading: true,
 };
 
 const slice = createSlice({
@@ -55,6 +57,19 @@ const slice = createSlice({
 
         addCartProductListFail: (state) => {
             state.addCartProductLoading = false
+        },
+        deleteCartProductList: (state, { payload }: PayloadAction<DeleteCartProductListPayload>) => {
+            state.deleteCartProductListLoading = true
+        },
+
+        deleteCartProductListSuccess: (state, { payload }: PayloadAction<DeleteCartProductListSuccessPayload>) => {
+            state.cartList = state.cartList.filter((item) => !payload.products.includes(item.product._id))
+
+            state.deleteCartProductListLoading = false
+        },
+
+        deleteCartProductListFail: (state) => {
+            state.deleteCartProductListLoading = false
         },
 
     },

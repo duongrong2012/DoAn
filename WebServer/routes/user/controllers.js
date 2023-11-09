@@ -52,9 +52,7 @@ module.exports.onLogin = async (req, res, next) => {
         })
 
         if (!user) {
-            res.status(400).json(createResponse({
-                message: "Sai tên tài khoản hoặc mật khẩu",
-            })) //400:bad request
+            next()
             return
         }
 

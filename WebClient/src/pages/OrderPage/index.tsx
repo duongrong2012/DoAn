@@ -76,25 +76,27 @@ const OrderPage = () => {
         </div>
       </div>
       <div className='body-container flex'>
-        {state.products?.map((item: OrderProduct) => {
-          const amount = item.product.price * item.quantity
+        <div className='products-container column'>
+          {state.products?.map((item: OrderProduct) => {
+            const amount = item.product.price * item.quantity
 
-          totalAmount += amount
+            totalAmount += amount
 
-          totalOrderProducts += item.quantity
+            totalOrderProducts += item.quantity
 
-          return (
-            <div className='item-container flex' key={item.product._id}>
-              <img alt="" src={item.product.images[0].url} className='product-image' />
-              <div className='item-name long-content'>{item.product.name}</div>
-              <div className='price long-content'>₫ {amount}</div>
-              <div className='quantity flex'>
-                <div className='quantity-prefix'>Số lượng:</div>
-                <div className='quantity-value'>{item.quantity}</div>
+            return (
+              <div className='item-container flex' key={item.product._id}>
+                <img alt="" src={item.product?.images[0].url} className='product-image' />
+                <div className='item-name long-content'>{item.product.name}</div>
+                <div className='price long-content'>₫ {amount}</div>
+                <div className='quantity flex'>
+                  <div className='quantity-prefix'>Số lượng:</div>
+                  <div className='quantity-value'>{item.quantity}</div>
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
         <div className='confirm-order-container column'>
           <div className='confirm-order-label'>Thông tin đơn hàng</div>
           <div className='checkout-summary-row flex'>

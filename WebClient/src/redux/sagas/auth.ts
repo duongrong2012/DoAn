@@ -19,9 +19,7 @@ function* registerAction({ payload }: PayloadAction<RegisterPayload>) {
     } catch (error) {
         apiErrorHandle(error)
 
-        yield put({
-            type: AuthActions.registerFail(),
-        });
+        yield put(AuthActions.registerFail());
     }
 }
 
@@ -29,14 +27,14 @@ function* getUserInfo() {
     try {
         const { data } = yield axiosClient.get('/nguoi-dung');
 
-        yield put(AuthActions.getgetUserInforSuccess({
+        yield put(AuthActions.getUserInforSuccess({
             data: data.results
         }));
 
     } catch (error) {
         apiErrorHandle(error)
 
-        yield put(AuthActions.getgetUserInforFailure);
+        yield put(AuthActions.getUserInforFailure());
     }
 }
 

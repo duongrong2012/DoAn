@@ -8,12 +8,17 @@ import { GetOrderListPayload, GetOrderPayload, OrderPayload } from 'redux/slices
 import Swal from 'sweetalert2';
 import routes from 'constants/routes';
 import { router } from 'App';
+import { CartActions } from 'redux/slices/cart';
 
 function* orderAction({ payload }: PayloadAction<OrderPayload>) {
     try {
         yield axiosClient.post(`/dat-hang`, payload);
 
         yield put(OrderActions.orderSuccess())
+
+        const productIdList = payload.products.map((item) => item.id)
+
+        yield put(CartActions.deleteCartProductList({ products: productIdList }))
 
         yield Swal.fire({
             title: "Đặt Hàng Thành Công",

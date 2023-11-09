@@ -40,9 +40,9 @@ export default function UserOrderListPage() {
     React.useEffect(() => {
         dispatch(OrderActions.getOrderList({
             page: currentPage,
-            limit: orderListLimit,
+            limit: pageSize,
         }))
-    }, [currentPage, dispatch])
+    }, [currentPage, dispatch, pageSize])
 
 
     const columns: ColumnsType<Order> = [
