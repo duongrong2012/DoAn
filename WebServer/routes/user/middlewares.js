@@ -53,16 +53,22 @@ module.exports.checkBruteForceAttack = async (req, res, next) => {
         return
     }
 
-    const isInBannedTime = (Date.now() - requestedIPs[req.ip].startedBanTime) <= 180000
+    if (requestedIPs[req.ip].startedBanTime) {
+        const isInBannedTime = (Date.now() - requestedIPs[req.ip].startedBanTime) <= 180000
 
-    if (isInBannedTime) {
-        next(new Error('Xin vui lòng thử lại sau'))
-        return
+        if (isInBannedTime) {
+            next(new Error('Xin vui lòng thử lại sau'))
+
+            return
+        }
+
+        requestedIPs[req.ip].count = 1
+
+        requestedIPs[req.ip].firstTimeAttempt = Date.now()
+
+        requestedIPs[req.ip].startedBanTime = undefined
+
     }
-
-    requestedIPs[req.ip].count = 1
-
-    requestedIPs[req.ip].firstTimeAttempt = Date.now()
 
     next(new Error('Sai tên tài khoản hoặc mật khẩu'))
 }

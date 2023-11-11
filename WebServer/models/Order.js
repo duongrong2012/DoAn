@@ -20,6 +20,10 @@ const orderSchema = new Schema({
         type: String,
         minlength: [10, 'Địa chỉ giao hàng tối thiểu 10 kí tự'],
         maxlength: [200, 'Địa chỉ giao hàng tối đa 200 kí tự'],
+        validate: {
+            message: () => 'Địa chỉ không hợp lệ',
+            validator: (value) => addressRegExp.test(value)
+        },
     },
     status: {
         type: String,
@@ -35,6 +39,8 @@ const orderSchema = new Schema({
 }) //khong hien thi version document
 
 orderSchema.plugin(mongooseLeanGetters);
+
+const addressRegExp = /^[#.0-9a-zA-Z\s,-]+$/ //chi duoc co dau -
 
 const Order = model('orders', orderSchema)
 

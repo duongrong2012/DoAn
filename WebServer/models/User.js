@@ -22,6 +22,10 @@ const userSchema = new Schema({
         type: String,
         minlength: [1, 'Tên tài khoản phải ít nhất 1 kí tự'],
         maxlength: [50, 'Tên tài khoản tối đa 50 kí tự'],
+        validate: {
+            message: () => 'Tên tài khoản không hợp lệ',
+            validator: (value) => nameRegExp.test(value)
+        },
         required: [true, 'Tên tài khoản là bắt buộc'],
     },
     email: {
@@ -36,6 +40,10 @@ const userSchema = new Schema({
         type: String,
         maxlength: [50, 'Tên người dùng tối đa 50 kí tự'],
         default: "",
+        validate: {
+            message: () => 'Tên người dùng không hợp lệ',
+            validator: (value) => nameRegExp.test(value)
+        },
     },
     avatar: {
         type: String,
@@ -46,11 +54,19 @@ const userSchema = new Schema({
         type: String,
         minlength: [10, 'Số điện thoại phải có độ dài là 10 kí tự'],
         maxlength: [10, 'Số điện thoại phải có độ dài là 10 kí tự'],
+        validate: {
+            message: () => 'Số điện thoại không hợp lệ',
+            validator: (value) => phoneRegExp.test(value)
+        },
     },
     address: {
         type: String,
         default: "",
         maxlength: [100, 'Địa chỉ tối đa 100 kí tự'],
+        validate: {
+            message: () => 'Địa chỉ không hợp lệ',
+            validator: (value) => addressRegExp.test(value)
+        },
     },
     birthDay: {
         type: Date,
@@ -91,6 +107,10 @@ const userSchema = new Schema({
 userSchema.plugin(mongooseLeanGetters);
 
 const passwordRegExp = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/
+const addressRegExp = /^[#.0-9a-zA-Z\s,-]+$/ //chi duoc co dau -
+const phoneRegExp = /^[0-9]+$/
+
+const nameRegExp = /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/ //a->z ,A->Z,0->9,chi duoc co dau '.' va dau'_'
 
 userSchema.pre('save', function (next, options) {
     if (this.isModified('password')) {
