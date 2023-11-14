@@ -12,6 +12,11 @@ import { getHeaderItem } from './constantHeader';
 import routes from 'constants/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { CartActions } from 'redux/slices/cart';
+import { ProductActions } from 'redux/slices/product';
+
+interface State {
+    autoCompleteValue: string,
+}
 
 
 export default function NavigationBar() {
@@ -22,11 +27,24 @@ export default function NavigationBar() {
 
     const user = useAppSelector((reduxState) => reduxState.auth.user);
 
-    const cartList = useAppSelector((reduxState) => reduxState.cart.cartList);
+    const cartListTotal = useAppSelector((reduxState) => reduxState.cart.cartListTotal);
+
+    const productListByFilter = useAppSelector((reduxState) => reduxState.product.productListByFilter);
+
+    const [state, setState] = React.useState<State>({
+        autoCompleteValue: ''
+    })
 
     const onClickAuthModal = React.useCallback(() => {
         dispatch(AuthActions.toggleAuthModal())
     }, [dispatch])
+
+    const productListOption = React.useMemo(() => {
+        return productListByFilter.map((item) => ({
+            label: item.name,
+            value: item._id
+        }))
+    }, [productListByFilter])
 
     const onClickDropdownItem = React.useCallback((item: any) => {
         if (item.key === "logOut") dispatch(AuthActions.checkLogOut())
@@ -43,6 +61,14 @@ export default function NavigationBar() {
         }
     }, [dispatch, user])
 
+    React.useEffect(() => {
+        dispatch(ProductActions.getProducts({ stateName: "productListByFilter", limit: 999999, page: 1, keyword: state.autoCompleteValue }))
+    }, [dispatch, state.autoCompleteValue])
+
+    const onChangeAutoComplete = React.useCallback((value: string) => {
+        setState((prevState) => ({ ...prevState, autoCompleteValue: value }))
+    }, []);
+
     return (
         <div className={`${styles.navBarContainer}`}>
             <div className='resolution navbar-body flex'>
@@ -51,6 +77,9 @@ export default function NavigationBar() {
                 </Link>
                 <AutoComplete
                     size="large"
+                    value={state.autoCompleteValue}
+                    onChange={onChangeAutoComplete}
+                    options={productListOption}
                 >
                     <Input.Search size="large" placeholder="Tìm kiếm sản phẩm" />
                 </AutoComplete>
@@ -72,7 +101,7 @@ export default function NavigationBar() {
                     <ShoppingCartOutlined className='cart-icon' />
                 ) : (
                     <Link to={routes.CartPage().path}>
-                        <Badge count={cartList.length}>
+                        <Badge count={cartListTotal}>
                             <ShoppingCartOutlined className='cart-icon' />
                         </Badge>
                     </Link>

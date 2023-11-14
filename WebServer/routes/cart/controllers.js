@@ -29,7 +29,7 @@ module.exports.onAddProduct = async (req, res, next) => {
     }
 };
 
-module.exports.onGetProduct = async (req, res, next) => {
+module.exports.onGetCartProduct = async (req, res, next) => {
     try {
         const { page, limit } = getPaginationConfig(req, 1, 10)
 
@@ -37,7 +37,9 @@ module.exports.onGetProduct = async (req, res, next) => {
             user: req.user._id
         }
 
-        const cartProducts = await CartProduct.find(filter)
+        const totalQuery = CartProduct.countDocuments(filter)
+
+        const cartQuery = CartProduct.find(filter)
             .skip((page - 1) * limit)
             .limit(limit)
             .populate({
@@ -48,8 +50,10 @@ module.exports.onGetProduct = async (req, res, next) => {
             })
             .lean({ getters: true })
 
+        const [total, cartProducts] = await Promise.all([totalQuery, cartQuery])
+
         res.json(createResponse({
-            results: cartProducts
+            results: cartProducts, total
         }))
 
     } catch (error) {

@@ -4,7 +4,6 @@ import styles from './style.module.scss';
 import UserPageManagementLayout from 'components/UserPageManagementLayout';
 import { useDispatch } from 'react-redux';
 import { OrderActions } from 'redux/slices/order';
-import { orderListLimit } from '../../constants';
 import useAppSelector from 'hooks/useAppSelector';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
@@ -20,6 +19,8 @@ export default function UserOrderListPage() {
     const navigate = useNavigate();
 
     const orderList = useAppSelector((reduxState) => reduxState.order.orderList);
+
+    const orderListTotal = useAppSelector((reduxState) => reduxState.order.orderListTotal);
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -101,7 +102,7 @@ export default function UserOrderListPage() {
                     pagination={{
                         showQuickJumper: true,
                         current: currentPage,
-                        total: orderList.length ?? 0,
+                        total: orderListTotal,
                         pageSize: pageSize,
                         pageSizeOptions: [20, 50, 1],
                         showSizeChanger: true,

@@ -13,13 +13,14 @@ function* getProductAction({ payload }: PayloadAction<GetProductsPayload>) {
         yield put(ProductActions.getProductSuccess({
             data: data.results,
             stateName: payload.stateName,
-            page: payload.page
+            page: payload.page,
+            total: data.total,
         }));
 
     } catch (error) {
         apiErrorHandle(error)
 
-        yield put(ProductActions.getProductFailure());
+        yield put(ProductActions.getProductFailure(payload));
     }
 }
 

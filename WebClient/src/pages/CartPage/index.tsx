@@ -3,18 +3,14 @@ import React from 'react';
 import styles from './style.module.scss';
 import UserPageManagementLayout from 'components/UserPageManagementLayout';
 import { useDispatch } from 'react-redux';
-import { orderListLimit } from '../../constants';
 import useAppSelector from 'hooks/useAppSelector';
 import { Button, Checkbox, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { Order, OrderStatus } from 'constants/types/order';
-import { getOrderStatusLabel } from 'utils';
 import { getQueryStringValue } from 'utils/query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import routes from 'constants/routes';
 import { CartActions } from 'redux/slices/cart';
 import { Cart } from 'constants/types/cart';
-import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import InputChange from 'components/InputChange';
 
@@ -29,6 +25,8 @@ export default function CartPage() {
     const navigate = useNavigate();
 
     const cartList = useAppSelector((reduxState) => reduxState.cart.cartList);
+
+    const cartListTotal = useAppSelector((reduxState) => reduxState.cart.cartListTotal);
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -70,9 +68,9 @@ export default function CartPage() {
     React.useEffect(() => {
         dispatch(CartActions.getCartList({
             page: currentPage,
-            limit: orderListLimit,
+            limit: pageSize,
         }))
-    }, [currentPage, dispatch])
+    }, [currentPage, dispatch, pageSize])
 
     const checkAll = React.useMemo(() => {
         return state.checkListData.length === cartList.length
@@ -179,7 +177,7 @@ export default function CartPage() {
                         pagination={{
                             showQuickJumper: true,
                             current: currentPage,
-                            total: cartList.length ?? 0,
+                            total: cartListTotal,
                             pageSize: pageSize,
                             pageSizeOptions: [20, 50, 1],
                             showSizeChanger: true,

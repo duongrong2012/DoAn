@@ -1,0 +1,28 @@
+.filterMenuContainer {
+    gap: 10px;
+    width: 270px;
+    min-width: 270px;
+
+    :global {
+        .item-container {
+            gap: 10px;
+
+            .item-header-container {
+                gap: 15px;
+                align-items: center;
+                font-size: 24px;
+                border-bottom: 1px solid #e6e6e6;
+                padding: 15px 0px;
+
+                .header-icon {
+                    height: 24px;
+                    width: 24px;
+                }
+            }
+
+            .item-component-container {
+                padding-top: 10px;
+            }
+        }
+    }
+}

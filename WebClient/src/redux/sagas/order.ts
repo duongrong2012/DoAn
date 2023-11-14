@@ -49,6 +49,7 @@ function* getOrderListAction({ payload }: PayloadAction<GetOrderListPayload>) {
         yield put(OrderActions.getOrderListSuccess({
             data: data.results,
             page: payload.page,
+            total: data.total,
         }));
 
     } catch (error) {

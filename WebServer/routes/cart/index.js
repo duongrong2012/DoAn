@@ -6,7 +6,7 @@ const { validateProductExist, validateProductExistInCart, validateProductCart } 
 const {
     onAddProduct,
     onDeleteProduct,
-    onGetProduct,
+    onGetCartProduct,
 } = require('./controllers');
 const { } = require('./middlewares');
 
@@ -25,7 +25,7 @@ router.delete('/',
 
 router.get('/',
     passport.authenticate('jwt', { session: false }),
-    onGetProduct,
+    onGetCartProduct,
 );
 
 

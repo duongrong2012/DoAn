@@ -20,6 +20,7 @@ function* getCartListAction({ payload }: PayloadAction<GetCartListPayload>) {
         yield put(CartActions.getCartListSuccess({
             data: data.results,
             page: payload.page,
+            total: data.total,
         }));
 
     } catch (error) {

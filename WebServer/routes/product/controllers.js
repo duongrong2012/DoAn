@@ -102,6 +102,19 @@ module.exports.onGetProduct = async (req, res, next) => {
 
         const filter = {}
 
+        const { keyword } = req.query;
+
+        if (keyword) {
+            const serarator = ' ';
+
+            filter.$text = {
+                $search: keyword
+                    .split(serarator)
+                    .map((x) => `"${x}"`)
+                    .join(serarator),
+            };
+        }
+
         if (req.query.sort && req.query.sort === 'createdAt') {
             sort.createdAt = -1 //1:ascending -1:descending
         }
@@ -116,7 +129,9 @@ module.exports.onGetProduct = async (req, res, next) => {
             filter.categories = { $in: categories.map((item) => item._id) }
         }
 
-        const product = await Product.find(filter)
+        const totalQuery = Product.countDocuments(filter)
+
+        const productQuery = Product.find(filter)
             .sort(sort)
             .populate("categories")
             .populate("images")
@@ -124,8 +139,10 @@ module.exports.onGetProduct = async (req, res, next) => {
             .limit(limit)
             .lean({ getters: true })
 
+        const [total, products] = await Promise.all([totalQuery, productQuery])
+
         res.json(createResponse({
-            results: product
+            results: products, total
         }))
 
     } catch (error) {

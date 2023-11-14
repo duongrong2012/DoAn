@@ -90,6 +90,8 @@ const productSchema = new Schema({
 
 productSchema.plugin(mongooseLeanGetters);
 
+productSchema.index({ name: "text" })
+
 const Product = model('products', productSchema)
 
 module.exports = Product;

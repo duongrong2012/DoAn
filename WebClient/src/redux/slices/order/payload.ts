@@ -17,6 +17,7 @@ export interface GetOrderListPayload {
 export interface GetOrderListSuccessPayload {
     data: Order[],
     page: number,
+    total: number,
 }
 
 export interface GetOrderPayload {

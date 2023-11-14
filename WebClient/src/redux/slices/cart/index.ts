@@ -5,6 +5,7 @@ import { Cart } from 'constants/types/cart';
 interface InitialState {
     cartList: Cart[],
     cartListLoading: boolean,
+    cartListTotal: number,
     addCartProductLoading: boolean,
     deleteCartProductListLoading: boolean,
 }
@@ -12,6 +13,7 @@ interface InitialState {
 const initialState: InitialState = {
     cartList: [],
     cartListLoading: true,
+    cartListTotal: 0,
     addCartProductLoading: true,
     deleteCartProductListLoading: true,
 };
@@ -28,11 +30,9 @@ const slice = createSlice({
         getCartListSuccess: (state, { payload }: PayloadAction<GetCartListSuccessPayload>) => {
             const cartList = payload.data
 
-            if (payload.page > 1) {
-                state.cartList = [...state.cartList, ...cartList]
-            } else {
-                state.cartList = cartList
-            }
+            state.cartListTotal = payload.total
+
+            state.cartList = cartList
 
             state.cartListLoading = false
         },

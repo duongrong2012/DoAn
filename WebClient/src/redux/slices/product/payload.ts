@@ -8,12 +8,18 @@ export interface GetProductsPayload {
   limit?: number;
   sort?: "createdAt" | "totalSold"
   category?: ProductCategory["slug"][]
+  keyword?: string
 }
 
 export interface GetProductsSuccessPayload {
   data: Product[];
   stateName: GetProductsPayload["stateName"];
   page: number | undefined
+  total: number,
+}
+
+export interface GetProductsFailurePayload {
+  stateName: GetProductsPayload["stateName"];
 }
 
 export interface GetProductDetailPayload {

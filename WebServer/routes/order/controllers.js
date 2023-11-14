@@ -68,7 +68,9 @@ module.exports.onGetOrderList = async (req, res, next) => {
             user: req.user._id,
         }
 
-        const orders = await Order.find(filter)
+        const totalQuery = Order.countDocuments(filter)
+
+        const orderQuery = Order.find(filter)
             .sort(sort)
             .populate({
                 path: "orderDetails",
@@ -80,8 +82,10 @@ module.exports.onGetOrderList = async (req, res, next) => {
             .limit(limit)
             .lean({ getters: true })
 
+        const [total, orders] = await Promise.all([totalQuery, orderQuery])
+
         res.json(createResponse({
-            results: orders
+            results: orders, total
         }))
 
     } catch (error) {

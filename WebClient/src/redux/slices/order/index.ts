@@ -5,6 +5,7 @@ import { Order } from 'constants/types/order';
 interface InitialState {
     orderLoading: boolean,
     orderList: Order[],
+    orderListTotal: number,
     getOrderListLoading: boolean,
     order: Order | null,
     getOrderLoading: boolean,
@@ -13,6 +14,7 @@ interface InitialState {
 const initialState: InitialState = {
     orderLoading: true,
     orderList: [],
+    orderListTotal: 0,
     getOrderListLoading: true,
     order: null,
     getOrderLoading: true,
@@ -41,11 +43,9 @@ const slice = createSlice({
         getOrderListSuccess: (state, { payload }: PayloadAction<GetOrderListSuccessPayload>) => {
             let orderList = payload.data
 
-            if (payload.page > 1) {
-                state.orderList = [...state.orderList, ...orderList]
-            } else {
-                state.orderList = orderList
-            }
+            state.orderListTotal = payload.total
+
+            state.orderList = orderList
 
             state.getOrderListLoading = false
         },

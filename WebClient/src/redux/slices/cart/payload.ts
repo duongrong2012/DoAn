@@ -9,6 +9,7 @@ export interface GetCartListPayload {
 export interface GetCartListSuccessPayload {
     data: Cart[],
     page: number,
+    total: number,
 }
 
 export interface AddCartProductListPayload {
