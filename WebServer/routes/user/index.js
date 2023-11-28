@@ -6,12 +6,16 @@ const {
     onLogin,
     onGetUser,
 } = require('./controllers');
-const { checkBruteForceAttack } = require('./middlewares');
+const { checkBruteForceAttack, checkCaptCha } = require('./middlewares');
 const router = express.Router();
 
-router.post('/dang-ki', onRegister);
+router.post('/dang-ki',
+    checkCaptCha,
+    onRegister
+);
 
 router.post('/dang-nhap',
+    checkCaptCha,
     onLogin,
     checkBruteForceAttack
 );

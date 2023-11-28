@@ -11,6 +11,7 @@ const {
     onGetProductRating,
 } = require('./controllers');
 const { productImageMulter, categoryImageMulter, validateProductExist } = require('./middlewares');
+const { checkCaptCha } = require('../user/middlewares');
 // const passport = require('passport');
 const router = express.Router();
 
@@ -45,6 +46,7 @@ router.get('/:id/rating',
 );
 
 router.post('/:id/rating',
+    checkCaptCha,
     passport.authenticate('jwt', { session: false }),
     validateProductExist,
     onRatingProduct,

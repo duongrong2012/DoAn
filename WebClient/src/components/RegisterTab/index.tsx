@@ -3,10 +3,9 @@ import { Button, Input, Radio, RadioChangeEvent } from 'antd';
 import React from 'react';
 
 import styles from './style.module.scss'
-import { EyeInvisibleOutlined, EyeTwoTone, PhoneOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { Gender } from 'constants/types/user';
 import { getGenderLabel } from 'utils';
-
 export interface RegisterTabProps {
     authLoading: boolean,
     onRegister: (username: string, password: string, email: string, phone: string, name: string, gender: Gender) => void

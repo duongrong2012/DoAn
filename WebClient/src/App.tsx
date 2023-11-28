@@ -10,6 +10,9 @@ import routes from 'constants/routes';
 import MainLayout from 'layouts/MainLayout';
 import { AuthActions } from 'redux/slices/auth';
 import PrivateRoute from 'components/PrivateRoute';
+import { GoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { axiosClient } from './constants';
+import useAppSelector from 'hooks/useAppSelector';
 
 const routeList: RouteObject[] = [{
   path: "/",
@@ -37,12 +40,24 @@ export const router = createBrowserRouter(routeList);
 function App() {
   const dispatch = useDispatch();
 
+  const isRefreshCaptcha = useAppSelector((reduxState) => reduxState.app.isRefreshCaptcha);
+
   React.useEffect(() => {
     dispatch(AuthActions.checkLogin())
   }, [dispatch])
 
+  const onVerifyReCaptcha = React.useCallback((token: string) => {
+    axiosClient.defaults.headers.captcha = token
+  }, [])
+
   return (
-    <RouterProvider router={router} />
+    <>
+      <GoogleReCaptcha
+        onVerify={onVerifyReCaptcha}
+        refreshReCaptcha={isRefreshCaptcha}
+      />
+      <RouterProvider router={router} />
+    </>
   );
 }
 

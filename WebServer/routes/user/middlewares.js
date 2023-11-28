@@ -1,3 +1,4 @@
+const { default: axios } = require("axios");
 const { Error } = require("mongoose");
 const multer = require("multer");
 
@@ -72,6 +73,25 @@ module.exports.checkBruteForceAttack = async (req, res, next) => {
 
     next(new Error('Sai tên tài khoản hoặc mật khẩu'))
 }
+
+module.exports.checkCaptCha = async (req, res, next) => {
+    const captchaToken = req.get("captcha")
+
+    if (!captchaToken) {
+        next(new Error('Yêu cầu không hợp lệ ,vui lòng thử lại sau'))
+        return
+    }
+
+    const captchaSecretKey = "6LfiwhEpAAAAAPgaBbPomjohN06bBum7mjTd36Ct"
+
+    const { data } = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${captchaSecretKey}&response=${captchaToken}`)
+    console.log(data)
+    if (data.score <= 0.3 || !data.success) {
+        next(new Error('Yêu cầu không hợp lệ ,vui lòng thử lại sau'))
+        return
+    }
+    next()
+};
 
 
 

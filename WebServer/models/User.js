@@ -65,7 +65,11 @@ const userSchema = new Schema({
         maxlength: [100, 'Địa chỉ tối đa 100 kí tự'],
         validate: {
             message: () => 'Địa chỉ không hợp lệ',
-            validator: (value) => addressRegExp.test(value)
+            validator: (value) => {
+                if (!value) return true
+
+                return addressRegExp.test(value)
+            }
         },
     },
     birthDay: {
@@ -107,7 +111,7 @@ const userSchema = new Schema({
 userSchema.plugin(mongooseLeanGetters);
 
 const passwordRegExp = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/
-const addressRegExp = /^[#.0-9a-zA-Z\s,-]+$/ //chi duoc co dau -
+const addressRegExp = /^[#.0-9a-zA-Z\s,-]+$/ //chi duoc co dau - , . #
 const phoneRegExp = /^[0-9]+$/
 
 const nameRegExp = /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/ //a->z ,A->Z,0->9,chi duoc co dau '.' va dau'_'

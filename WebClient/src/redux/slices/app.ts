@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface InitialState {
-  name: string
+  isRefreshCaptcha: boolean,
 }
 
 const initialState: InitialState = {
-  name: ""
+  isRefreshCaptcha: false
 };
 
 const slice = createSlice({

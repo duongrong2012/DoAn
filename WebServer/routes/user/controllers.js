@@ -26,6 +26,7 @@ module.exports.onRegister = async (req, res, next) => {
             email: req.body.email,
             fullName: req.body.fullName,
             password: req.body.password,
+            phone: req.body.phone,
             gender: req.body.gender,
         });
 

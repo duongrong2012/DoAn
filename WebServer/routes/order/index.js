@@ -7,11 +7,13 @@ const {
     onGetOrderDetail,
 } = require('./controllers');
 const { validateProductsExist } = require('./middlewares');
+const { checkCaptCha } = require('../user/middlewares');
 
 // const passport = require('passport');
 const router = express.Router();
 
 router.post('/',
+    checkCaptCha,
     passport.authenticate('jwt', { session: false }),
     validateProductsExist,
     onBuyProduct,

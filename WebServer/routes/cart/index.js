@@ -9,11 +9,13 @@ const {
     onGetCartProduct,
 } = require('./controllers');
 const { } = require('./middlewares');
+const { checkCaptCha } = require('../user/middlewares');
 
 // const passport = require('passport');
 const router = express.Router();
 
 router.post('/',
+    checkCaptCha,
     passport.authenticate('jwt', { session: false }),
     validateProductExist,
     onAddProduct,

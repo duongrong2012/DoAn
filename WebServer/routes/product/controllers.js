@@ -108,10 +108,7 @@ module.exports.onGetProduct = async (req, res, next) => {
             const serarator = ' ';
 
             filter.$text = {
-                $search: keyword
-                    .split(serarator)
-                    .map((x) => `"${x}"`)
-                    .join(serarator),
+                $search: `"${keyword}"`
             };
         }
 

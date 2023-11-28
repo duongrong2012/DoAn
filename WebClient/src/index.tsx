@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from 'redux/store';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import { reCaptChaSiteKey } from './constants';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,7 +15,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <GoogleReCaptchaProvider
+        reCaptchaKey={reCaptChaSiteKey}
+      >
+        <App />
+      </GoogleReCaptchaProvider>
     </Provider>
   </React.StrictMode>
 );

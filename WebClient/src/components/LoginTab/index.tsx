@@ -4,7 +4,6 @@ import React from 'react';
 
 import styles from './style.module.scss'
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-
 export interface LoginTabProps {
     onLogin: (username: string, password: string) => void
 }
