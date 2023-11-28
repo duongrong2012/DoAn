@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import styles from './style.module.scss';
-import FilterMenu from 'components/FilterMenu';
+import FilterMenu, { FilterMenuProps } from 'components/FilterMenu';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ProductActions } from 'redux/slices/product';
 import useAppSelector from 'hooks/useAppSelector';
@@ -11,15 +11,12 @@ import { Pagination } from 'antd';
 import { getQueryStringValue } from 'utils/query';
 
 interface State {
-    category: string[] | null,
-    categoryParams: string[] | null,
+
 }
 
 export default function FilterPage() {
 
     const [searchParams, setSearchParams] = useSearchParams();
-
-    const categoryParams = searchParams.getAll('category');
 
     const dispatch = useDispatch()
 
@@ -27,13 +24,12 @@ export default function FilterPage() {
 
     const totalProduct = useAppSelector((reduxState) => reduxState.product.totalProduct);
 
-    const [state, setState] = React.useState<State>({
-        category: categoryParams,
-        categoryParams
-    },)
-
     const currentPage = React.useMemo(() => {
         return getQueryStringValue(searchParams, "page", 1)
+    }, [searchParams])
+
+    const categoryParams = React.useMemo(() => {
+        return searchParams.getAll('category');
     }, [searchParams])
 
 
@@ -41,19 +37,37 @@ export default function FilterPage() {
         return getQueryStringValue(searchParams, "limit", 20)
     }, [searchParams])
 
+    const keyword = React.useMemo(() => {
+        return getQueryStringValue(searchParams, "keyword", '')
+    }, [searchParams])
+
     React.useEffect(() => {
-        if (state.categoryParams) {
-            dispatch(ProductActions.getProducts({ stateName: "productListByFilter", limit: pageSize, page: currentPage, category: state.categoryParams }))
-        }
-    }, [currentPage, dispatch, pageSize, state.categoryParams])
+        dispatch(ProductActions.getProducts({
+            stateName: "productListByFilter",
+            keyword,
+            limit: pageSize,
+            page: currentPage,
+            category: categoryParams
+        }))
+    }, [categoryParams, currentPage, dispatch, keyword, pageSize])
 
     const onChangePagination = React.useCallback((page: number, pageSize: number) => {
-        setSearchParams({ page: page.toString(), limit: pageSize.toString() })
+        setSearchParams({ page: page.toString(), limit: pageSize.toString() }, { replace: false })
+    }, [setSearchParams])
+
+    const onFilterChange = React.useCallback<FilterMenuProps['onChange']>((data) => {
+        const params: Record<string, string | string[]> = {}
+
+        if (data.category) {
+            params.category = data.category
+        }
+
+        setSearchParams(params, { replace: false })
     }, [setSearchParams])
 
     return (
         <div className={`${styles.filterPageContainer} flex resolution`}>
-            <FilterMenu />
+            <FilterMenu onChange={onFilterChange} />
             <div className='column-two-container column'>
                 <Pagination
                     showQuickJumper

@@ -2,18 +2,27 @@ import React from 'react';
 
 import styles from './style.module.scss';
 import images from 'assets';
-import { Select } from 'antd';
+import { Button, Select } from 'antd';
 import useAppSelector from 'hooks/useAppSelector';
 import { CategoryActions } from 'redux/slices/category';
 import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { SearchOutlined } from '@ant-design/icons';
 
 interface State {
-    category: string[] | null,
+    category: string[] | undefined,
     categoryParams: string[] | null,
 }
 
-export default function FilterMenu() {
+interface OnChangeData {
+    category: State['category']
+}
+
+export interface FilterMenuProps {
+    onChange: (data: OnChangeData) => void
+}
+
+export default function FilterMenu({ onChange }: FilterMenuProps) {
 
     const [searchParams] = useSearchParams();
 
@@ -39,16 +48,19 @@ export default function FilterMenu() {
         dispatch(CategoryActions.getCategories())
     }, [dispatch])
 
-
     React.useEffect(() => {
         if (state.categoryParams) {
-            setState((prevState) => ({ ...prevState, category: state.categoryParams }))
+            setState((prevState) => ({ ...prevState, category: state.categoryParams ?? undefined }))
         }
     }, [dispatch, state.categoryParams])
 
     const onChangeCategorySelect = (value: any) => {
         setState((prevState) => ({ ...prevState, category: value }))
     };
+
+    const onClickSearch = React.useCallback(() => {
+        onChange({ category: state.category })
+    }, [onChange, state.category])
 
     const filterMenuLayout = [
         {
@@ -63,10 +75,6 @@ export default function FilterMenu() {
                 options={categorySelectOptions}
                 value={state.category}
             />
-        },
-        {
-            label: 'Danh mục 2',
-            component: <div>bb</div>
         },
     ]
 
@@ -83,6 +91,7 @@ export default function FilterMenu() {
                     </div>
                 </div>
             ))}
+            <Button onClick={onClickSearch} className='search-button' type="primary" icon={<SearchOutlined />} > Tìm Kiếm</Button>
         </div >
     )
 

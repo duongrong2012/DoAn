@@ -40,11 +40,13 @@ export default function NavigationBar() {
     }, [dispatch])
 
     const productListOption = React.useMemo(() => {
+        if (!state.autoCompleteValue) return []
+
         return productListByFilter.map((item) => ({
             label: item.name,
             value: item._id
         }))
-    }, [productListByFilter])
+    }, [productListByFilter, state.autoCompleteValue])
 
     const onClickDropdownItem = React.useCallback((item: any) => {
         if (item.key === "logOut") dispatch(AuthActions.checkLogOut())
@@ -62,12 +64,24 @@ export default function NavigationBar() {
     }, [dispatch, user])
 
     React.useEffect(() => {
-        dispatch(ProductActions.getProducts({ stateName: "productListByFilter", limit: 999999, page: 1, keyword: state.autoCompleteValue }))
-    }, [dispatch, state.autoCompleteValue])
+        dispatch(ProductActions.getProducts({ stateName: "productListByFilter", limit: 999999, page: 1, keyword: '' }))
+    }, [dispatch])
 
-    const onChangeAutoComplete = React.useCallback((value: string) => {
+    const onSearchAutoComplete = React.useCallback((value: string) => {
         setState((prevState) => ({ ...prevState, autoCompleteValue: value }))
     }, []);
+
+    const onSelectAutoComplete = React.useCallback((value: string, item: any) => {
+        navigate(routes.FilterPage({ keyword: item.label }).path)
+
+        setState((prevState) => ({ ...prevState, autoCompleteValue: item.label }))
+    }, [navigate]);
+
+    const onInputKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>>((event) => {
+        if (event.key === 'Enter') {
+            navigate(routes.FilterPage({ keyword: state.autoCompleteValue }).path)
+        }
+    }, [navigate, state.autoCompleteValue]);
 
     return (
         <div className={`${styles.navBarContainer}`}>
@@ -78,8 +92,10 @@ export default function NavigationBar() {
                 <AutoComplete
                     size="large"
                     value={state.autoCompleteValue}
-                    onChange={onChangeAutoComplete}
+                    onSelect={onSelectAutoComplete}
+                    onSearch={onSearchAutoComplete}
                     options={productListOption}
+                    onInputKeyDown={onInputKeyDown}
                 >
                     <Input.Search size="large" placeholder="Tìm kiếm sản phẩm" />
                 </AutoComplete>

@@ -23,9 +23,11 @@ export const reCaptChaSiteKey = "6LfiwhEpAAAAANF0-Mr6KyMgPdRvi_f4-lGs96OH"
 export const reCaptChaSecretKey = "6LfiwhEpAAAAAPgaBbPomjohN06bBum7mjTd36Ct"
 
 axiosClient.interceptors.request.use((config) => {
-    const isRefreshCaptcha = store.getState().app.isRefreshCaptcha
+    if (["dang-nhap", "dang-ki"].some((item) => config.url?.includes(item))) {
+        const isRefreshCaptcha = store.getState().app.isRefreshCaptcha
 
-    store.dispatch(AppActions.setAppState({ isRefreshCaptcha: !isRefreshCaptcha }))
+        store.dispatch(AppActions.setAppState({ isRefreshCaptcha: !isRefreshCaptcha }))
+    }
 
     return config
 })

@@ -16,7 +16,7 @@ const slice = createSlice({
       Object.keys(payload).forEach(item => {
         const key = item as keyof typeof payload;
 
-        if (payload[key])
+        if (payload[key] !== undefined)
           state[key] = payload[key];
       });
     },
