@@ -39,7 +39,7 @@ const userSchema = new Schema({
     fullName: {
         type: String,
         maxlength: [50, 'Tên người dùng tối đa 50 kí tự'],
-        default: "",
+        required: [true, 'Tên người dùng là bắt buộc'],
         validate: {
             message: () => 'Tên người dùng không hợp lệ',
             validator: (value) => nameRegExp.test(value)

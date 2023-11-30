@@ -4,7 +4,8 @@ import { LocalStorageKey, axiosClient } from '../../constants'
 import { apiErrorHandle } from '../../utils';
 import { AuthActions } from 'redux/slices/auth';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { LoginPayload, RegisterPayload } from 'redux/slices/auth/payload';
+import { LoginPayload, RegisterPayload, UpdateProfilePayload } from 'redux/slices/auth/payload';
+import Swal from 'sweetalert2';
 
 function* registerAction({ payload }: PayloadAction<RegisterPayload>) {
     try {
@@ -75,10 +76,43 @@ function* checkLogoutAction() {
 
 }
 
+function* updateProfileAction({ payload }: PayloadAction<UpdateProfilePayload>) {
+    try {
+        const formData = new FormData();
+
+        Object.keys(payload).forEach(key => {
+            const itemKey = key as keyof UpdateProfilePayload
+
+            if (itemKey === "avatar") {
+                formData.append(itemKey, payload[itemKey]!.fileSend)
+            } else if (payload[itemKey]) {
+                formData.append(itemKey, payload[itemKey]!)
+            }
+        });
+
+        yield axiosClient.patch(`/nguoi-dung`, formData);
+
+        yield put(AuthActions.updateProfileSuccess(payload));
+
+        Swal.fire({
+            title: "Cập nhật thành công",
+            icon: "success",
+            confirmButtonText: "Xác nhận",
+            confirmButtonColor: "#00cc44"
+        })
+
+    } catch (error) {
+        apiErrorHandle(error)
+
+        yield put(AuthActions.updateProfileFailure());
+    }
+}
+
 
 export default function* auth() {
     yield takeLeading(AuthActions.register.type, registerAction);
     yield takeLeading(AuthActions.login.type, loginAction);
     yield takeLeading(AuthActions.checkLogin.type, checkLoginAction);
     yield takeLeading(AuthActions.checkLogOut.type, checkLogoutAction);
+    yield takeLeading(AuthActions.updateProfile.type, updateProfileAction);
 }

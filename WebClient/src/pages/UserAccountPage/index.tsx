@@ -1,35 +1,47 @@
 import React from 'react';
 import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
 
 import styles from './style.module.scss';
 import UserPageManagementLayout from 'components/UserPageManagementLayout';
 import useAppSelector from 'hooks/useAppSelector';
-import { Button, DatePicker, DatePickerProps, Input, Radio, RadioChangeEvent } from 'antd';
+import { Button, DatePicker, DatePickerProps, Input, Radio, RadioChangeEvent, notification } from 'antd';
 import { getGenderLabel } from 'utils';
 import { Gender } from 'constants/types/user';
 import { dateFormat } from '../../constants';
 import ImageFilePreview, { ImageFile } from 'components/ImageFilePreview';
+import { AuthActions } from 'redux/slices/auth';
+import { UpdateProfilePayload } from 'redux/slices/auth/payload';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 interface State {
     fullName: string,
     email: string,
     phone: string,
-    gender: string,
+    gender: Gender,
     birthDay: Date | null,
     attachFile: ImageFile,
+    currentPassword: string,
+    newPassword: string,
+    confirmNewpassword: string,
+
 }
 
 export default function UserAccountPage() {
+    const dispatch = useDispatch()
 
     const user = useAppSelector((reduxState) => reduxState.auth.user);
 
     const [state, setState] = React.useState<State>({
-        fullName: "",
-        email: "",
-        phone: "",
-        gender: getGenderLabel(Gender.MALE),
-        birthDay: null,
+        fullName: user!.fullName,
+        email: user!.email,
+        phone: user!.phone,
+        gender: user!.gender,
+        birthDay: user!.birthDay ? new Date(user!.birthDay) : null,
         attachFile: { filePreview: null, fileSend: null },
+        currentPassword: "",
+        newPassword: "",
+        confirmNewpassword: "",
     })
 
     const onChangeInput = React.useCallback((fieldName: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,20 +61,25 @@ export default function UserAccountPage() {
     }, [])
 
     const onClickSaveButton = React.useCallback(() => {
-        // dispatch({ type: ActionTypes.UPDATE_PROFILE, payload: { avatar: state.attachFile } })
-    }, [])
-
-    React.useEffect(() => {
-        if (user) {
-            setState((prevState) => ({
-                ...prevState,
-                fullName: user.fullName,
-                phone: user.phone,
-                email: user.email,
-                gender: user.gender,
-            }))
+        const payload: UpdateProfilePayload = {
+            birthDay: state.birthDay?.toISOString(),
+            fullName: state.fullName,
+            gender: state.gender,
+            phone: state.phone,
+            currentPassword: state.currentPassword,
+            newPassword: state.newPassword,
         }
-    }, [user])
+
+        if (state.attachFile.filePreview && state.attachFile.fileSend) {
+            payload.avatar = state.attachFile as NonNullable<UpdateProfilePayload['avatar']>
+        }
+        if (state.newPassword !== state.confirmNewpassword) {
+            return notification.error({ message: "Mật khẩu mới và Mật khẩu xác nhận phải giống nhau" })
+        }
+
+        dispatch(AuthActions.updateProfile(payload))
+    }, [dispatch, state.attachFile, state.birthDay, state.confirmNewpassword, state.currentPassword, state.fullName, state.gender, state.newPassword, state.phone])
+
     const userInforFields = [{
         label: 'Họ Và Tên',
         component: <Input className='custom-input' value={state.fullName} onChange={onChangeInput("fullName")} />
@@ -83,9 +100,34 @@ export default function UserAccountPage() {
     }, {
         label: 'Ngày Sinh',
         component: <DatePicker
-            defaultValue={dayjs('2015/01/01', dateFormat)}
+            value={state.birthDay ? dayjs(state.birthDay) : null}
             format={dateFormat}
             onChange={onChangeDatePicker}
+            placeholder='Chọn Ngày'
+        />
+    }, {
+        label: 'Mật Khẩu Hiện Tại',
+        component: <Input.Password
+            className='custom-input'
+            value={state.currentPassword}
+            onChange={onChangeInput('currentPassword')}
+            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+        />
+    }, {
+        label: 'Mật khẩu Mới',
+        component: <Input.Password
+            className='custom-input'
+            value={state.newPassword}
+            onChange={onChangeInput('newPassword')}
+            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+        />
+    }, {
+        label: 'Xác Nhận Mật Khẩu Mới',
+        component: <Input.Password
+            className='custom-input'
+            value={state.confirmNewpassword}
+            onChange={onChangeInput('confirmNewpassword')}
+            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
         />
     },]
 

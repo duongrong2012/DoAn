@@ -5,8 +5,9 @@ const {
     onRegister,
     onLogin,
     onGetUser,
+    updateProfile,
 } = require('./controllers');
-const { checkBruteForceAttack, checkCaptCha } = require('./middlewares');
+const { checkBruteForceAttack, checkCaptCha, userAvatarMulter } = require('./middlewares');
 const router = express.Router();
 
 router.post('/dang-ki',
@@ -23,6 +24,12 @@ router.post('/dang-nhap',
 router.get('/',
     passport.authenticate('jwt', { session: false }), // yeu cau bat buoc phai truyen token
     onGetUser,
+);
+
+router.patch('/',
+    passport.authenticate('jwt', { session: false }),
+    userAvatarMulter.single("avatar"),
+    updateProfile,
 );
 
 module.exports = router;

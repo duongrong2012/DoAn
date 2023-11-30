@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { User } from 'constants/types/user';
-import { GetUserInforsSuccessPayload, LoginPayload, RegisterPayload } from './payload';
+import { GetUserInforsSuccessPayload, LoginPayload, RegisterPayload, UpdateProfilePayload } from './payload';
 
 interface InitialState {
     isModalOpen: boolean,
     authLoading: boolean,
     checkLoginLoading: boolean,
+    updateProfileLoading: boolean,
     user: User | null,
 }
 
@@ -14,6 +15,7 @@ const initialState: InitialState = {
     authLoading: false,
     user: null,
     checkLoginLoading: false,
+    updateProfileLoading: false,
 };
 
 const slice = createSlice({
@@ -65,6 +67,31 @@ const slice = createSlice({
             state.checkLoginLoading = false
             state.user = null
         },
+
+        updateProfile: (state, { payload }: PayloadAction<UpdateProfilePayload>) => {
+            state.updateProfileLoading = true
+        },
+
+        updateProfileSuccess: (state, action: PayloadAction<UpdateProfilePayload>) => {
+            let user = { ...state.user as User }
+
+            const { avatar, newPassword, currentPassword, ...payload } = action.payload //tách avatar ra làm biến riêng và ra khỏi biến payload
+
+            if (avatar) {
+                user.avatar = avatar.filePreview
+            }
+
+            user = { ...user, ...payload }
+
+            state.user = user
+
+        },
+
+        updateProfileFailure: (state) => {
+            state.authLoading = false
+            state.checkLoginLoading = false
+        },
+
     },
 });
 

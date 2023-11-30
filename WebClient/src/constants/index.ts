@@ -16,7 +16,7 @@ export const ratingListLimit = 10
 
 export const orderListLimit = 10
 
-export const dateFormat = 'YYYY/MM/DD';
+export const dateFormat = 'DD/MM/YYYY';
 
 export const reCaptChaSiteKey = "6LfiwhEpAAAAANF0-Mr6KyMgPdRvi_f4-lGs96OH"
 

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const sha256 = require('crypto-js/sha256');
 
 const { jwtOptions, accountStatus } = require("../../utils/constants");
-const { createResponse } = require("../../utils/helpers");
+const { createResponse, getFilePath } = require("../../utils/helpers");
 
 module.exports.onRegister = async (req, res, next) => {
     try {
@@ -82,4 +82,56 @@ module.exports.onGetUser = async (req, res, next) => {
     res.json(createResponse({
         results: req.user
     }))
+}
+
+module.exports.updateProfile = async (req, res, next) => {
+    try {
+
+        const user = await User.findById(req.user._id)
+
+        if (typeof req.body.currentPassword === 'string' && typeof req.body.newPassword === 'string') {
+            const currentPassword = sha256(req.body.currentPassword).toString()
+
+            const isCurrentPasswordMatched = user.password === currentPassword
+
+            if (!isCurrentPasswordMatched) {
+                res.status(400).json(createResponse({
+                    message: "Mật khẩu hiện tại không chính xác",
+                })) //400:bad request
+                return
+            }
+
+            user.password = req.body.newPassword
+        }
+
+        if (req.body.fullName) {
+            user.fullName = req.body.fullName
+        }
+
+        if (req.body.gender) {
+            user.gender = req.body.gender
+        }
+
+        if (req.body.phone) {
+            user.phone = req.body.phone
+        }
+
+        if (req.body.birthDay) {
+            user.birthDay = req.body.birthDay
+        }
+
+        if (req.file) {
+            user.avatar = getFilePath(req.file)
+        }
+
+        await user.save({ validateBeforeSave: true })
+
+        res.json(createResponse({
+            message: "Tài khoản thay đổi thành công",
+        }))
+        return
+
+    } catch (error) {
+        next(error)
+    }
 }
