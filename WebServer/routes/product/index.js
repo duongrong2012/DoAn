@@ -46,7 +46,6 @@ router.get('/:id/rating',
 );
 
 router.post('/:id/rating',
-    checkCaptCha,
     passport.authenticate('jwt', { session: false }),
     validateProductExist,
     onRatingProduct,

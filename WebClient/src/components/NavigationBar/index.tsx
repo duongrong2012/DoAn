@@ -29,7 +29,7 @@ export default function NavigationBar() {
 
     const cartListTotal = useAppSelector((reduxState) => reduxState.cart.cartListTotal);
 
-    const productListByFilter = useAppSelector((reduxState) => reduxState.product.productListByFilter);
+    const productSearchSuggestions = useAppSelector((reduxState) => reduxState.product.productSearchSuggestions);
 
     const [state, setState] = React.useState<State>({
         autoCompleteValue: ''
@@ -42,11 +42,11 @@ export default function NavigationBar() {
     const productListOption = React.useMemo(() => {
         if (!state.autoCompleteValue) return []
 
-        return productListByFilter.map((item) => ({
+        return productSearchSuggestions.map((item) => ({
             label: item.name,
             value: item._id
         }))
-    }, [productListByFilter, state.autoCompleteValue])
+    }, [productSearchSuggestions, state.autoCompleteValue])
 
     const onClickDropdownItem = React.useCallback((item: any) => {
         if (item.key === "logOut") dispatch(AuthActions.checkLogOut())

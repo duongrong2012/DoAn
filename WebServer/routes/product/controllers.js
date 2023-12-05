@@ -209,6 +209,7 @@ module.exports.onRatingProduct = async (req, res, next) => {
 
             productRating = await (await ProductRating.create(productRatingModel))
                 .populate("user", "avatar fullName gender")
+                .lean({ getters: true })
 
             await Product.updateOne({
                 _id: req.params.id
@@ -224,6 +225,7 @@ module.exports.onRatingProduct = async (req, res, next) => {
                 updateRatingModel,
                 { runValidators: true, new: true }, //new:true gia tri sau update
             ).populate("user", "avatar fullName gender")
+                .lean({ getters: true })
 
             await Product.updateOne({
                 _id: req.params.id

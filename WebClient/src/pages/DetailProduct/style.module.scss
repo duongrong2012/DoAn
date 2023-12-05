@@ -42,6 +42,10 @@
                     gap: 20px;
                     font-size: 24px;
 
+                    .product-rating-container {
+                        cursor: pointer;
+                    }
+
                     .product-rating-number {
                         padding-right: 10px;
                         filter: invert(83%) sepia(23%) saturate(4912%) hue-rotate(340deg) brightness(100%) contrast(96%);

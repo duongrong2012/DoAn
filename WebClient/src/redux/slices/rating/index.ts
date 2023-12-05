@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Rating } from 'constants/types/rating';
-import { GetRatingPayload, GetRatingSuccessPayload } from './payload';
+import { CreateRatingPayload, CreateRatingSuccessPayload, GetRatingPayload, GetRatingSuccessPayload } from './payload';
 
 interface InitialState {
     ratingList: Rating[],
@@ -36,6 +36,32 @@ const slice = createSlice({
 
         getRatingFail: (state) => {
             state.ratingListLoading = false
+        },
+
+        createRating: (state, { payload }: PayloadAction<CreateRatingPayload>) => {
+            state.createRatingLoading = true
+        },
+
+        createRatingSuccess: (state, { payload }: PayloadAction<CreateRatingSuccessPayload>) => {
+            const ratingItem = payload.data as Rating
+
+            let ratingList = [...state.ratingList]
+
+            const ratingItemIndex = ratingList.findIndex((item) => item._id === ratingItem._id)
+
+            if (ratingItemIndex !== -1) {
+                ratingList[ratingItemIndex] = ratingItem
+            } else {
+                ratingList = [ratingItem, ...ratingList]
+            }
+
+            state.ratingList = ratingList
+
+            state.createRatingLoading = false
+        },
+
+        createRatingFail: (state) => {
+            state.createRatingLoading = false
         },
     },
 });

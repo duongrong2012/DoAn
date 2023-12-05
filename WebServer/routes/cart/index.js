@@ -15,7 +15,6 @@ const { checkCaptCha } = require('../user/middlewares');
 const router = express.Router();
 
 router.post('/',
-    checkCaptCha,
     passport.authenticate('jwt', { session: false }),
     validateProductExist,
     onAddProduct,

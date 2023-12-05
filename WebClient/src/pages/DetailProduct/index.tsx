@@ -18,10 +18,12 @@ import { ratingListLimit } from '../../constants';
 import routes from 'constants/routes';
 import { AuthActions } from 'redux/slices/auth';
 import { CartActions } from 'redux/slices/cart';
+import RatingModal from 'components/RatingModal';
 
 interface State {
   currentImage: string,
   productQuantity: number,
+  isRatingModalOpen: boolean,
 }
 
 const DetailProduct = () => {
@@ -34,11 +36,14 @@ const DetailProduct = () => {
   const [state, setState] = React.useState<State>({
     currentImage: "",
     productQuantity: 1,
+    isRatingModalOpen: false,
   })
 
   const productDetail = useAppSelector((reduxState) => reduxState.product.productDetail);
 
   const ratingList = useAppSelector((reduxState) => reduxState.rating.ratingList);
+
+  const createRatingLoading = useAppSelector((reduxState) => reduxState.rating.createRatingLoading);
 
   const user = useAppSelector((reduxState) => reduxState.auth.user);
 
@@ -97,11 +102,32 @@ const DetailProduct = () => {
     dispatch(AuthActions.toggleAuthModal())
   }, [dispatch])
 
+  const onClickRaingProduct = React.useCallback(() => {
+    setState((prevState) => ({ ...prevState, isRatingModalOpen: true }))
+  }, [])
+
   const onClickAddCartProduct = React.useCallback(() => {
     if (productDetail) {
       dispatch(CartActions.addCartProductList({ product: productDetail._id, quantity: state.productQuantity, isToggleAllert: true }))
     }
   }, [dispatch, productDetail, state.productQuantity])
+
+  const onCancleRatingModal = React.useCallback(() => {
+    setState((prevState) => ({ ...prevState, isRatingModalOpen: !prevState.isRatingModalOpen }))
+  }, [])
+
+  const onSubmitRating = React.useCallback((rating: number, comment: string) => {
+    if (productDetail) {
+      dispatch(RatingActions.createRating({
+        productId: productDetail._id,
+        comment,
+        rating,
+        callback: (success) => {
+          if (success) setState((prevState) => ({ ...prevState, isRatingModalOpen: false }))
+        },
+      }))
+    }
+  }, [dispatch, productDetail])
 
   return (
     <div className={`${styles.detailProductContainer} column resolution`}>
@@ -126,7 +152,7 @@ const DetailProduct = () => {
         <div className='more-product-detail column'>
           <div className='product-name'>{productDetail?.name}</div>
           <div className='flex product-achievements'>
-            <div className='flex'>
+            <div className='flex product-rating-container' onClick={onClickRaingProduct}>
               <div className='product-rating-number'>{ratingNumber}</div>
               <RatingStar ratingNumber={ratingNumber} size={24} />
             </div>
@@ -157,7 +183,13 @@ const DetailProduct = () => {
       </div>
       <ProductDescription product={productDetail} />
       <ProductRating ratingList={ratingList} onClickMoreRating={onClickMoreRating} />
-    </div>
+      <RatingModal
+        open={state.isRatingModalOpen}
+        oncancel={onCancleRatingModal}
+        onSubmitRating={onSubmitRating}
+        ratingProductLoading={createRatingLoading}
+      />
+    </div >
   );
 }
 

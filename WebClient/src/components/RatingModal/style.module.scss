@@ -1,0 +1,48 @@
+.authModalContainer {
+    :global {
+        .ant-modal-body {
+            gap: 10px;
+            display: flex;
+            flex-direction: column;
+
+            .rating-title {
+                text-align: center;
+                font-size: 24px;
+                color: var(--bold-text);
+                margin-bottom: 5px;
+            }
+
+            .descrip {
+                font-size: 16px;
+            }
+
+            .star-rating-row {
+                gap: 25px;
+                align-items: center;
+            }
+
+            .star-descrip {
+                font-size: 18px;
+            }
+
+            .custom-but {
+                padding: 0px 10px;
+                font-size: 15px;
+                background-color: var(--mainColor);
+                color: white;
+                min-width: 105px;
+                max-width: 150px;
+                height: 42px;
+                border-radius: 6px;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+
+                &:hover {
+                    background-color: var(--main-color-hover);
+                    color: white;
+                }
+            }
+        }
+    }
+}

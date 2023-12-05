@@ -84,12 +84,11 @@ const slice = createSlice({
             user = { ...user, ...payload }
 
             state.user = user
-
+            state.updateProfileLoading = false
         },
 
         updateProfileFailure: (state) => {
-            state.authLoading = false
-            state.checkLoginLoading = false
+            state.updateProfileLoading = false
         },
 
     },

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AppActions } from 'redux/slices/app';
 import store from 'redux/store';
 
-export const host = 'http://127.0.0.1:3001';
+export const host = process.env.REACT_APP_API_HOST;
 
 export const axiosClient = axios.create({
     baseURL: `${host}`

@@ -7,6 +7,7 @@ export interface InitialState {
     topFiveProducts: Product[],
     topSoldProducts: Product[],
     productListByFilter: Product[],
+    productSearchSuggestions: Product[],
     topFiveProductsLoading: boolean,
     productDetail: Product | null,
     productDetailLoading: boolean,
@@ -17,6 +18,7 @@ const initialState: InitialState = {
     topFiveProducts: [],
     topSoldProducts: [],
     productListByFilter: [],
+    productSearchSuggestions: [],
     topFiveProductsLoading: true,
     productDetail: null,
     productDetailLoading: false,
@@ -35,7 +37,7 @@ const slice = createSlice({
         getProductSuccess: (state, { payload }: PayloadAction<GetProductsSuccessPayload>) => {
             state.totalProduct = payload.total
 
-            if (payload.stateName === 'productListByFilter') {
+            if (payload.stateName === 'productSearchSuggestions') {
                 state[payload.stateName] = payload.data;
             } else {
                 // @ts-ignore

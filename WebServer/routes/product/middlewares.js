@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose");
 const multer = require("multer");
 const getSlug = require("speakingurl");
 const Product = require("../../models/Product");
+const { createResponse } = require("../../utils/helpers");
 
 const storage = multer.diskStorage({
     destination: 'public/images/productImages/',
