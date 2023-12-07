@@ -13,27 +13,38 @@ import PrivateRoute from 'components/PrivateRoute';
 import { GoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { axiosClient } from './constants';
 import useAppSelector from 'hooks/useAppSelector';
+import AdminLayout from 'admin/components/AdminLayout';
+import adminRoutes from 'admin/constants/routes';
 
-const routeList: RouteObject[] = [{
-  path: "/",
-  Component: MainLayout,
-  children: Object.values(routes).map(item => {
-    const routeItem = item();
+const renderRoutItem = (item: any) => {
+  const routeItem = item();
 
-    const route: RouteObject = {
-      path: routeItem.path,
-      Component: routeItem.Component,
-    };
+  const route: RouteObject = {
+    path: routeItem.path,
+    Component: routeItem.Component,
+  };
 
-    if ((routeItem as any).private) {
-      route.Component = undefined;
+  if ((routeItem as any).private) {
+    route.Component = undefined;
 
-      route.element = <PrivateRoute Component={routeItem.Component} />
-    }
+    route.element = <PrivateRoute Component={routeItem.Component} />
+  }
 
-    return route;
-  })
-}]
+  return route;
+}
+
+const routeList: RouteObject[] = [
+  {
+    path: "/",
+    Component: MainLayout,
+    children: Object.values(routes).map(renderRoutItem)
+  },
+  {
+    path: "/quan-tri",
+    Component: AdminLayout,
+    children: Object.values(adminRoutes).map(renderRoutItem)
+  }
+]
 
 export const router = createBrowserRouter(routeList);
 

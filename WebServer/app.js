@@ -19,14 +19,22 @@ const productRouter = require('./routes/product');
 const userRouter = require('./routes/user');
 const orderRouter = require('./routes/order');
 const cartRouter = require('./routes/cart');
+const adminRouter = require('./routes/admin');
 
 const { jwtOptions, multerErrorMessages, mongooseCastErrorField } = require('./utils/constants');
 const User = require('./models/User');
+const Admin = require('./models/Admin');
 
 passport.use(new JwtStrategy(jwtOptions, async function (jwt_payload, done) {
     try {
 
-        const user = await User.findById(jwt_payload.id, '-password').lean({ getters: true })
+        let user
+
+        if (jwt_payload.admin) {
+            user = await Admin.findById(jwt_payload.id, '-password').lean({ getters: true })
+        } else {
+            user = await User.findById(jwt_payload.id, '-password').lean({ getters: true })
+        }
 
         if (user) {
             return done(null, user)
@@ -63,6 +71,7 @@ app.use('/san-pham', productRouter);
 app.use('/nguoi-dung', userRouter);
 app.use('/dat-hang', orderRouter);
 app.use('/gio-hang', cartRouter);
+app.use('/quan-tri-vien', adminRouter);
 
 app.use((error, req, res, next) => {
     let { message } = error;

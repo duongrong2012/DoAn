@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 const yup = require('yup');
 const mongooseLeanGetters = require('mongoose-lean-getters');
 const { accountStatus } = require('../utils/constants');
+const { SHA256 } = require('crypto-js');
 
 const avatarGetter = (value) => {
     if (value.startsWith('http')) return value
@@ -12,7 +13,7 @@ const avatarGetter = (value) => {
 const adminLevel = {
     ONE: 1,
     THREE: 3,
-    Five: 5,
+    FIVE: 5,
 }
 
 const adminSchema = new Schema({
@@ -22,6 +23,11 @@ const adminSchema = new Schema({
             values: Object.values(adminLevel),
             message: 'Cấp không hợp lệ'
         }
+    },
+    name: {
+        type: String,
+        maxlength: [50, 'Tên Quản Trị Viên tối đa 50 kí tự'],
+        required: [true, 'Tên Quản Trị Viên là bắt buộc'],
     },
     username: {
         trim: true,
@@ -50,6 +56,7 @@ const adminSchema = new Schema({
     },
     status: {
         type: String,
+        default: accountStatus.ACTIVE,
         enum: {
             values: Object.keys(accountStatus),
             message: 'Trạng thái tài khoản không hợp lệ'
@@ -61,6 +68,14 @@ const adminSchema = new Schema({
 }) //khong hien thi version document
 
 adminSchema.plugin(mongooseLeanGetters);
+
+adminSchema.pre('save', function (next, options) {
+    if (this.isModified('password')) {
+        this.password = SHA256(this.password).toString();
+    }
+
+    next();
+});
 
 const Admin = model('admins', adminSchema)
 
