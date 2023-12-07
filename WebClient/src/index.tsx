@@ -4,17 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import store from 'redux/store';
+import userStore from 'redux/store';
+import adminStore from 'admin/redux/store';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { reCaptChaSiteKey } from './constants';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+const isAdminRoute = window.location.pathname.startsWith('/quan-tri')
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={isAdminRoute ? adminStore : userStore}>
       <GoogleReCaptchaProvider
         reCaptchaKey={reCaptChaSiteKey}
       >
