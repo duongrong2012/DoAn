@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AppActions } from 'redux/slices/app';
-import store from 'redux/store';
+import clientStore from 'redux/store';
+import adminStore from '../admin/redux/store';
 
 export const host = process.env.REACT_APP_API_HOST;
 
@@ -24,9 +25,13 @@ export const reCaptChaSecretKey = "6LfiwhEpAAAAAPgaBbPomjohN06bBum7mjTd36Ct"
 
 axiosClient.interceptors.request.use((config) => {
     if (["dang-nhap", "dang-ki"].some((item) => config.url?.includes(item))) {
-        const isRefreshCaptcha = store.getState().app.isRefreshCaptcha
+        const isRefreshClientCaptcha = clientStore.getState().app.isRefreshCaptcha
 
-        store.dispatch(AppActions.setAppState({ isRefreshCaptcha: !isRefreshCaptcha }))
+        const isRefreshAdminCaptcha = adminStore.getState().app.isRefreshCaptcha
+
+        clientStore.dispatch(AppActions.setAppState({ isRefreshCaptcha: !isRefreshClientCaptcha }))
+
+        adminStore.dispatch(AppActions.setAppState({ isRefreshCaptcha: !isRefreshAdminCaptcha }))
     }
 
     return config

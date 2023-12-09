@@ -24,6 +24,10 @@ const renderRoutItem = (item: any) => {
     Component: routeItem.Component,
   };
 
+  if (route.path?.startsWith('/quan-tri/')) {
+    route.path = route.path.replace('/quan-tri/', '')
+  }
+
   if ((routeItem as any).private) {
     route.Component = undefined;
 
@@ -58,7 +62,6 @@ function App() {
   }, [dispatch])
 
   const onVerifyReCaptcha = React.useCallback((token: string) => {
-    console.log(token)
     axiosClient.defaults.headers.captcha = token
   }, [])
 
