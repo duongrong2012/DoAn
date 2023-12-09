@@ -60,7 +60,7 @@ module.exports.onLogin = async (req, res, next) => {
             return
         }
 
-        const payload = { id: admin._id };
+        const payload = { id: admin._id, admin: true };
 
         const token = jwt.sign(payload, jwtOptions.secretOrKey);
 

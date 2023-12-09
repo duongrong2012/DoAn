@@ -58,6 +58,7 @@ function App() {
   }, [dispatch])
 
   const onVerifyReCaptcha = React.useCallback((token: string) => {
+    console.log(token)
     axiosClient.defaults.headers.captcha = token
   }, [])
 

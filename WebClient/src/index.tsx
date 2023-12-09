@@ -12,11 +12,18 @@ import { reCaptChaSiteKey } from './constants';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+let store: any = userStore;
+
 const isAdminRoute = window.location.pathname.startsWith('/quan-tri')
+
+if (isAdminRoute) {
+  store = adminStore;
+}
 
 root.render(
   <React.StrictMode>
-    <Provider store={isAdminRoute ? adminStore : userStore}>
+    <Provider store={store}>
       <GoogleReCaptchaProvider
         reCaptchaKey={reCaptChaSiteKey}
       >

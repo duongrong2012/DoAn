@@ -3,6 +3,8 @@ import styles from './style.module.scss';
 import images from 'assets';
 import { Button, Input } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { AuthActions } from 'admin/redux/slices/auth';
+import { useDispatch } from 'react-redux';
 
 interface State {
     username: string,
@@ -10,6 +12,8 @@ interface State {
 }
 
 export default function LoginPage() {
+
+    const dispatch = useDispatch()
 
     const [state, setState] = React.useState<State>({
         username: "",
@@ -23,9 +27,12 @@ export default function LoginPage() {
     }, [])
 
     const onClickLogin = React.useCallback(() => {
+        dispatch(AuthActions.login({
+            username: state.username,
+            password: state.password
+        }))
+    }, [dispatch, state.password, state.username])
 
-    }, [])
-    console.log(state.username)
     return (
         <div className={`${styles.LoginPageContainer} column resolution`}>
             <img className='logo' src={images.logo} alt='' />

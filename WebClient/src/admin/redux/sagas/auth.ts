@@ -1,12 +1,12 @@
 import { put, takeLeading } from 'redux-saga/effects';
 
-import { LocalStorageKey, axiosClient } from '../../constants'
 import { PayloadAction } from '@reduxjs/toolkit';
-import { LoginPayload, UpdateProfilePayload } from 'redux/slices/auth/payload';
-import Swal from 'sweetalert2';
+import { LoginPayload } from 'redux/slices/auth/payload';
 import { apiErrorHandle } from 'utils';
 import { AuthActions } from '../slices/auth';
-
+import { router } from 'App';
+import { axiosClient, LocalStorageKey } from '../../../constants';
+import adminRoutes from 'admin/constants/routes';
 
 function* getadminInfo() {
     try {
@@ -33,6 +33,8 @@ function* loginAction({ payload }: PayloadAction<LoginPayload>) {
         localStorage.setItem(LocalStorageKey.TOKEN, data.results);
 
         yield getadminInfo()
+
+        router.navigate(adminRoutes.UserManagementPage().path)
 
     } catch (error) {
         apiErrorHandle(error)
