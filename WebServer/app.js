@@ -25,12 +25,11 @@ const { jwtOptions, multerErrorMessages, mongooseCastErrorField } = require('./u
 const User = require('./models/User');
 const Admin = require('./models/Admin');
 
-passport.use(new JwtStrategy(jwtOptions, async function (jwt_payload, done) {
+passport.use(new JwtStrategy(jwtOptions, async function (req, jwt_payload, done) {
     try {
-
         let user
 
-        if (jwt_payload.admin) {
+        if (req.baseUrl === "/quan-tri-vien") {
             user = await Admin.findById(jwt_payload.id, '-password').lean({ getters: true })
         } else {
             user = await User.findById(jwt_payload.id, '-password').lean({ getters: true })

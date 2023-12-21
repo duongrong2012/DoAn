@@ -2,7 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import routes from 'constants/routes';
-import useAppSelector from 'hooks/useAppSelector';
+import useClientAppSelector from 'hooks/useAppSelector';
+import useAdminAppSelector from '../../admin/hooks/useAppSelector';
+import adminRoutes from 'admin/constants/routes';
 
 
 interface Props {
@@ -12,13 +14,21 @@ interface Props {
 export default function PrivateRoute({ Component }: Props) {
     const navigate = useNavigate();
 
-    const user = useAppSelector((reduxState) => reduxState.auth.user)
+    const user = useClientAppSelector((reduxState) => reduxState.auth.user)
 
-    const checkLoginLoading = useAppSelector((reduxState) => reduxState.auth.checkLoginLoading)
+    const admin = useAdminAppSelector((reduxState) => reduxState.auth.admin)
+
+    const checkLoginLoading = useClientAppSelector((reduxState) => reduxState.auth.checkLoginLoading)
+
+    const isAdminRoute = window.location.pathname.startsWith('/quan-tri')
 
     if (checkLoginLoading) return null;
 
-    if (!user) {
+    if (isAdminRoute && !admin) {
+        navigate(adminRoutes.Login().path)
+
+        return null;
+    } else if (!isAdminRoute && !user) {
         navigate(routes.Home().path)
 
         return null;

@@ -58,7 +58,7 @@ module.exports.onBuyProduct = async (req, res, next) => {
 }
 
 
-module.exports.onGetOrderList = async (req, res, next) => {
+module.exports.onGetUserOrderList = async (req, res, next) => {
     try {
         const { page, limit } = getPaginationConfig(req, 1, 10)
 

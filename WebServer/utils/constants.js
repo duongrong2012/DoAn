@@ -12,6 +12,7 @@ module.exports.accountStatus = {
 }
 
 module.exports.jwtOptions = {
+  passReqToCallback: true,
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //token duoc lay tu header Bearer,
   secretOrKey: process.env.JWT_SECRET,
 };

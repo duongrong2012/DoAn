@@ -3,7 +3,7 @@ const passport = require('passport');
 
 const {
     onBuyProduct,
-    onGetOrderList,
+    onGetUserOrderList,
     onGetOrderDetail,
 } = require('./controllers');
 const { validateProductsExist } = require('./middlewares');
@@ -20,7 +20,7 @@ router.post('/',
 
 router.get('/',
     passport.authenticate('jwt', { session: false }),
-    onGetOrderList,
+    onGetUserOrderList,
 );
 
 router.get('/chi-tiet-don-hang/:id',

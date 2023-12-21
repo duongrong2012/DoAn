@@ -1,0 +1,22 @@
+.container {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonSeparator {
+  margin-right: 4px;
+}
+
+.searchContainer {
+  width: 300px;
+  margin-bottom: 24px;
+  align-self: flex-end;
+}
+
+.customCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

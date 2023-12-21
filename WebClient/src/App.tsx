@@ -24,10 +24,6 @@ const renderRoutItem = (item: any) => {
     Component: routeItem.Component,
   };
 
-  if (route.path?.startsWith('/quan-tri/')) {
-    route.path = route.path.replace('/quan-tri/', '')
-  }
-
   if ((routeItem as any).private) {
     route.Component = undefined;
 

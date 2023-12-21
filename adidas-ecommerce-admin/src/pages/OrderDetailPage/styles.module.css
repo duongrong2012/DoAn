@@ -1,0 +1,34 @@
+.container {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 450px;
+  margin: 12px 0px;
+}
+
+.inputAddonBefore {
+  width: 100px;
+}
+
+.customerDetailCard {
+  margin-bottom: 24px;
+}
+
+.fieldContainer {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.fieldLabel {
+  width: 200px;
+}
+
+.submitContainer {
+  padding: 20px 0px 0px 200px;
+}
+
+.productImage {}
