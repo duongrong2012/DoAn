@@ -13,6 +13,7 @@ const {
     onGetUserOrderDetailByAdmin,
     onUpdateCategoryByAdmin,
     onUpdateProductByAdmin,
+    onUpdateOrderByAdmin,
 } = require('./controllers');
 const { checkBruteForceAttack, checkCaptCha, userAvatarMulter } = require('./middlewares');
 const { productImageMulter, categoryImageMulter } = require('../product/middlewares');
@@ -41,6 +42,11 @@ router.get('/nguoi-dung',
 router.get('/don-hang',
     passport.authenticate('jwt', { session: false }), // yeu cau bat buoc phai truyen token
     onGetAllOrderList,
+);
+
+router.patch('/don-hang/:id',
+    passport.authenticate('jwt', { session: false }),
+    onUpdateOrderByAdmin,
 );
 
 router.get('/chi-tiet-don-hang/:id',

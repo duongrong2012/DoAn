@@ -93,12 +93,18 @@ const OrderDetailPage = () => {
   ];
 
   const [state, setState] = React.useState({
-    status: transactionDetail?.status,
+    status: '',
   });
 
   const onChangeSelect = React.useCallback((value) => {
     setState((prevState) => ({ ...prevState, status: value }));
   }, []);
+
+  React.useEffect(() => {
+    if (transactionDetail) {
+      setState((prevState) => ({ ...prevState, status: transactionDetail.status }));
+    }
+  }, [transactionDetail])
 
   const onSubmit = React.useCallback(() => {
     const canUpdate = state.status !== transactionDetail?.status;
@@ -108,16 +114,11 @@ const OrderDetailPage = () => {
     dispatch({
       type: ActionTypes.UPDATE_TRANSACTION,
       payload: {
-        id: transactionDetail?.id,
+        id: transactionDetail?._id,
         status: state.status,
       },
     });
-  }, [
-    dispatch,
-    state.status,
-    transactionDetail?.id,
-    transactionDetail?.status,
-  ]);
+  }, [dispatch, state.status, transactionDetail?._id, transactionDetail?.status]);
 
   return (
     <div className={styles.container}>
@@ -128,9 +129,9 @@ const OrderDetailPage = () => {
         </div>
         <div className={styles.fieldContainer}>
           <div className={styles.fieldLabel}><span>Trạng thái:</span></div>
-          <Select value={transactionDetail?.status} disabled={updateLoading} onChange={onChangeSelect}>
+          <Select value={state.status} disabled={updateLoading} onChange={onChangeSelect}>
             {Object.keys(transactionStatusColor).map((key) => (
-              <Select.Option key={key} value={+key}>
+              <Select.Option key={key} value={key}>
                 <Tag color={transactionStatusColor[key]}>{transactionStatusLabel[key]}</Tag>
               </Select.Option>
             ))}

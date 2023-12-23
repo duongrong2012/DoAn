@@ -52,33 +52,26 @@ function* getTransactionDetail({ payload }) {
 }
 
 function* updateTransaction(action) {
-  let errorMessage = 'Failed to update order';
-
   try {
     const { payload } = action;
 
-    const { data } = yield axiosClient.put(`/transaction/${payload.id}`, {
+    yield axiosClient.patch(`/quan-tri-vien/don-hang/${payload.id}`, {
       status: payload.status,
     });
 
-    if (data.status === responseStatus.OK) {
-      Modal.success({
-        title: 'Thành công',
-        content: 'Cập nhật đơn hàng thành công',
-      });
+    Modal.success({
+      title: 'Thành công',
+      content: 'Cập nhật đơn hàng thành công',
+    });
 
-      yield put({ type: ActionTypes.UPDATE_TRANSACTION_SUCCESS, payload });
-      return;
-    }
+    yield put({ type: ActionTypes.UPDATE_TRANSACTION_SUCCESS, payload });
+    return;
 
-    errorMessage = (data.errors?.jwt_mdlw_error ?? data.results?.error) || errorMessage;
   } catch (error) {
-    errorMessage = error.response?.data?.errors?.jwt_mdlw_error ?? error.message;
+    apiErrorHandler(error)
+
+    yield put({ type: ActionTypes.UPDATE_TRANSACTION_FAILED });
   }
-
-  yield put({ type: ActionTypes.UPDATE_TRANSACTION_FAILED });
-
-  yield call(apiErrorHandler, errorMessage);
 }
 
 export default function* appSaga() {

@@ -11,6 +11,7 @@ const { ProductImage, imageType } = require("../../models/ProductImage");
 const Product = require("../../models/Product");
 const Category = require("../../models/Category");
 const Order = require("../../models/Order");
+const OrderDetail = require("../../models/OrderDetail");
 
 module.exports.onRegister = async (req, res, next) => {
     try {
@@ -233,7 +234,7 @@ module.exports.onUpdateProductByAdmin = async (req, res, next) => {
             await Promise.all(promises)
         }
 
-        await product.save({ validateBeforeSave: true })
+        await product.save({ validateBeforeSave: true, validateModifiedOnly: true })
 
         res.json(createResponse({
             message: "Sản phẩm thay đổi thành công",
@@ -290,7 +291,7 @@ module.exports.onUpdateCategoryByAdmin = async (req, res, next) => {
             category.image = getFilePath(req.file)
         }
 
-        await category.save({ validateBeforeSave: true })
+        await category.save({ validateBeforeSave: true, validateModifiedOnly: true })
 
         res.json(createResponse({
             message: "Danh mục thay đổi thành công",
@@ -359,4 +360,30 @@ module.exports.onGetUserOrderDetailByAdmin = async (req, res, next) => {
         next(error)
     }
 };
+
+module.exports.onUpdateOrderByAdmin = async (req, res, next) => {
+    try {
+        const order = await Order.findById(req.params.id)
+
+        if (!order) {
+            res.status(404).json(createResponse({
+                message: "order Id không hợp lệ",
+            }))
+            return
+        }
+
+        if (req.body.status) {
+            order.status = req.body.status
+        }
+
+        await order.save({ validateBeforeSave: true, validateModifiedOnly: true })
+
+        res.json(createResponse({
+            message: "Cập nhật đơn hàng thành công",
+        }))
+
+    } catch (error) {
+        next(error)
+    }
+}
 

@@ -82,7 +82,7 @@ const CategoryManagePage = () => {
         style={{ margin: '24px 0 -24px -38px' }}
         onFinish={resolve}
       >
-        {!!initialValues.id && <Form.Item name="categoryId" hidden />}
+        {!!initialValues.categoryId && <Form.Item name="categoryId" hidden />}
 
         <Form.Item
           label="Tên danh mục"
@@ -147,8 +147,15 @@ const CategoryManagePage = () => {
         });
 
         modalRef.current = modal;
-      });
-      dispatch({ type: actionType, payload: values });
+      })
+
+      const payload = { ...values }
+
+      if (payload.name === initialValues.name) {
+        payload.name = undefined
+      }
+
+      dispatch({ type: actionType, payload });
     } catch (error) {
       setState((prevState) => ({ ...prevState, image: null }))
       modal.destroy();

@@ -1,7 +1,7 @@
 import { call, put, all, takeLeading, delay } from 'redux-saga/effects';
 
 import * as ActionTypes from '../actionTypes';
-import { apiErrorHandler } from '../../utils';
+import { apiErrorHandler, createFile } from '../../utils';
 import { axiosClient, responseStatus } from '../../constants';
 
 function* getCategories() {
@@ -68,38 +68,33 @@ function* addCategory(action) {
 }
 
 function* updateCategory(action) {
-  let errorMessage = 'Failed to update categories';
-
   try {
     const { payload } = action;
+    console.log(payload)
+    const formData = new FormData();
 
-    const body = {
-      name: payload.name,
-    };
-
-    if (payload.type) {
-      body.type = payload.type;
+    if (payload.image[0].originFileObj) {
+      formData.append('image', payload.image[0].originFileObj);
     }
 
-    const { data } = yield axiosClient.put(`/category/${payload.id}`, body);
-
-    if (data.status === responseStatus.OK) {
-      yield delay(3000)
-      yield all([
-        put({ type: ActionTypes.UPDATE_CATEGORY_SUCCESS }),
-        put({ type: ActionTypes.GET_CATEGORIES })
-      ]);
-      return;
+    if (payload.name) {
+      formData.append('name', payload.name);
     }
 
-    errorMessage = (data.errors?.jwt_mdlw_error ?? data.results?.error) || errorMessage;
+    yield axiosClient.patch(`/quan-tri-vien/danh-muc/${payload.categoryId}`, formData);
+
+    yield all([
+      put({ type: ActionTypes.UPDATE_CATEGORY_SUCCESS }),
+      put({ type: ActionTypes.GET_CATEGORIES })
+    ]);
+
   } catch (error) {
-    errorMessage = error.response?.data?.errors?.jwt_mdlw_error ?? error.message;
+    apiErrorHandler(error)
+
+    yield put({ type: ActionTypes.UPDATE_CATEGORY_FAILED });
   }
 
   yield put({ type: ActionTypes.UPDATE_CATEGORY_FAILED });
-
-  yield call(apiErrorHandler, errorMessage);
 }
 
 export default function* categoriesSaga() {

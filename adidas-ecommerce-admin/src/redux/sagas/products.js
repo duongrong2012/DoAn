@@ -110,9 +110,8 @@ function* updateProductAction(action) {
     })
 
     const images = yield Promise.all(promises)
-    console.log(productDetail.name !== payload.values.name)
+
     if (productDetail.name !== payload.values.name) {
-      console.log('vo if')
       formData.append('name', payload.values.name);
     }
     formData.append('categories', `${payload.values.categories}`);
