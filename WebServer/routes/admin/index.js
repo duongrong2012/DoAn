@@ -17,6 +17,7 @@ const {
 } = require('./controllers');
 const { checkBruteForceAttack, checkCaptCha, userAvatarMulter } = require('./middlewares');
 const { productImageMulter, categoryImageMulter } = require('../product/middlewares');
+const revenueRouter = require('./revenue');
 const router = express.Router();
 
 router.post('/dang-ki',
@@ -77,6 +78,8 @@ router.patch('/danh-muc/:id',
     categoryImageMulter.single("image"),
     onUpdateCategoryByAdmin,
 );
+
+router.use('/doanh-thu', revenueRouter);
 
 router.get('/',
     passport.authenticate('jwt', { session: false }), // yeu cau bat buoc phai truyen token

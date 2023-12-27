@@ -7,12 +7,12 @@ import styles from "./styles.module.css";
 import * as ActionTypes from "../../redux/actionTypes";
 import { formatCurrency } from "../../utils";
 
-const InComeManagePage = () => {
+const RevenueManagePage = () => {
   const dispatch = useDispatch();
 
-  const budget = useSelector((state) => state.budget.budgetList);
+  const budget = useSelector((state) => state.revenue.budgetList);
 
-  const yearbudget = useSelector((state) => state.budget.yearBudgetList);
+  const yearbudget = useSelector((state) => state.revenue.yearBudgetList);
 
   const [state, setState] = React.useState({
     viewType: 'month',
@@ -118,15 +118,18 @@ const InComeManagePage = () => {
   };
 
   React.useEffect(() => {
-    const now = new Date()
-    dispatch({ type: ActionTypes.GET_BUDGET });
-    dispatch({
-      type: ActionTypes.GET_YEARBUDGET,
-      payload: {
-        dateString: now.getFullYear(),
-        viewType: 'month'
-      }
-    });
+    dispatch({ type: ActionTypes.GET_REVENUE });
+    dispatch({ type: ActionTypes.GET_BEST_SELLER_PRODUCTS });
+
+
+    // const now = new Date()
+    // dispatch({
+    //   type: ActionTypes.GET_YEARBUDGET,
+    //   payload: {
+    //     dateString: now.getFullYear(),
+    //     viewType: 'month'
+    //   }
+    // });
   }, [dispatch]);
 
   return (
@@ -195,4 +198,4 @@ const InComeManagePage = () => {
     </div>
   );
 };
-export default InComeManagePage;
+export default RevenueManagePage;

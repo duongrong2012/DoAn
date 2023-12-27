@@ -2,26 +2,35 @@ import { put, takeLeading } from 'redux-saga/effects';
 
 import * as ActionTypes from '../actionTypes';
 import { axiosClient, responseStatus } from '../../constants';
+import { apiErrorHandler } from '../../utils';
 
-function* getBudgetAction() {
-  let errorMessage = '';
-
+function* getBestSellerProducts() {
   try {
-    const { data } = yield axiosClient.get('/order/admin/budget-product');
+    const { data } = yield axiosClient.get(`/san-pham`, {
+      params: { sort: 'totalSold' },
+    });
 
-    if (data.status === responseStatus.OK) {
-      yield put({ type: ActionTypes.GET_BUDGET_SUCCESS, payload: data.results });
-      return;
-    }
-
-    errorMessage = data.errors.jwt_mdlw_error;
+    yield put({
+      type: ActionTypes.GET_BEST_SELLER_PRODUCTS_SUCCESS,
+      payload: { data: data.results },
+    });
   } catch (error) {
-    errorMessage = error.response?.data?.errors?.jwt_mdlw_error ?? error.message;
+    apiErrorHandler(error);
+
+    yield put({ type: ActionTypes.GET_BEST_SELLER_PRODUCTS_FAILED });
   }
+}
 
-  yield put({ type: ActionTypes.GET_BUDGET_FAILED });
+function* getRevenue() {
+  try {
+    const { data } = yield axiosClient.get('/quan-tri-vien/doanh-thu');
 
-  alert(errorMessage);
+    yield put({ type: ActionTypes.GET_REVENUE_SUCCESS, payload: data.results });
+  } catch (error) {
+    apiErrorHandler(error);
+
+    yield put({ type: ActionTypes.GET_REVENUE_FAILED });
+  }
 }
 
 function* getYearBudgetAction(action) {
@@ -51,6 +60,7 @@ function* getYearBudgetAction(action) {
 }
 
 export default function* appSaga() {
-  yield takeLeading(ActionTypes.GET_BUDGET, getBudgetAction);
+  yield takeLeading(ActionTypes.GET_REVENUE, getRevenue);
+  yield takeLeading(ActionTypes.GET_BEST_SELLER_PRODUCTS, getBestSellerProducts);
   yield takeLeading(ActionTypes.GET_YEARBUDGET, getYearBudgetAction);
 }

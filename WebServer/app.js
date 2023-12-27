@@ -29,7 +29,7 @@ passport.use(new JwtStrategy(jwtOptions, async function (req, jwt_payload, done)
     try {
         let user
 
-        if (req.baseUrl === "/quan-tri-vien") {
+        if (req.baseUrl.startsWith('/quan-tri-vien')) {
             user = await Admin.findById(jwt_payload.id, '-password').lean({ getters: true })
         } else {
             user = await User.findById(jwt_payload.id, '-password').lean({ getters: true })
@@ -82,7 +82,6 @@ app.use((error, req, res, next) => {
     const isMongooseError = error instanceof mongoose.Error.ValidationError || error instanceof mongoose.Error.CastError;
 
     if (isMongooseError) {
-        console.log(error)
         if (error.errors) {
             const [firstErrorKey] = Object.keys(error.errors);
 

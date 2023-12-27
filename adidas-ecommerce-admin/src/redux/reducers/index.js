@@ -6,7 +6,7 @@ import usersReducer from './users';
 import productReducer from './products';
 import categoriesReducer from './categories';
 import transactionsReducer from './transactions';
-import budgetReducer from './budget';
+import revenueReducer from './revenue';
 
 const createRootReducer = (history) => combineReducers({
   router: connectRouter(history),
@@ -15,7 +15,7 @@ const createRootReducer = (history) => combineReducers({
   products: productReducer,
   categories: categoriesReducer,
   transactions: transactionsReducer,
-  budget: budgetReducer,
+  revenue: revenueReducer,
 });
 
 export default createRootReducer;
