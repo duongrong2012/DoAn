@@ -13,7 +13,7 @@ import CategoryManagePage from '../pages/CategoryManagePage';
 import ProductManagePage from '../pages/ProductManagePage';
 import AddProductPage from '../pages/AddProductPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
-import InComeManagePage from '../pages/IncomeManagePage';
+import RevenueManagePage from '../pages/RevenueManagePage';
 import store from '../redux/store';
 
 import * as ActionTypes from '../redux/actionTypes';
@@ -85,9 +85,9 @@ export const routes = {
       defaultParam: '/:productId'
     }
   },
-  INCOME: {
-    path: '/income',
-    component: InComeManagePage,
+  REVENUE: {
+    path: '/revenue',
+    component: RevenueManagePage,
   },
   NOT_FOUND: {
     path: '*',
@@ -118,7 +118,7 @@ export const sideMenuItems = [
   },
   {
     title: 'Quản lý doanh thu',
-    path: routes.INCOME.path,
+    path: routes.REVENUE.path,
     icon: <FaDollarSign />,
   },
   {

@@ -5,15 +5,15 @@ import usersSaga from './users';
 import productsSaga from './products';
 import categoriesSaga from './categories';
 import transactionsSaga from './transactions'
-import budgetSaga from './budget'
+import revenueSaga from './revenue'
 
 export default function* rootSaga() {
   yield all([
     fork(appSaga),
     fork(usersSaga),
+    fork(revenueSaga),
     fork(productsSaga),
     fork(categoriesSaga),
     fork(transactionsSaga),
-    fork(budgetSaga),
   ]);
 }

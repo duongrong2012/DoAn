@@ -12,7 +12,6 @@ const productSchema = new Schema({
         validate: {
             message: "Tên sản phẩm đã tồn tại",
             validator: async (value) => {
-                console.log('properties', this.properties)
                 const isProductExist = await Product.exists({ name: value })
                 return !isProductExist
             },
