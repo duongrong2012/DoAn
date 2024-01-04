@@ -1,10 +1,9 @@
 import { Modal } from 'antd';
-import { push } from 'connected-react-router';
-import { put, call, takeLeading } from 'redux-saga/effects';
+import { put, takeLeading } from 'redux-saga/effects';
 
 import * as ActionTypes from '../actionTypes';
 import { apiErrorHandler } from '../../utils';
-import { axiosClient, responseStatus, routes } from '../../constants';
+import { axiosClient, } from '../../constants';
 
 function* getTransactions({ payload }) {
   try {

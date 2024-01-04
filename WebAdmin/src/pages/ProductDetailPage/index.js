@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Card,
   Form,
-  Modal,
   Input,
   Button,
   Upload,
@@ -13,18 +12,16 @@ import {
 } from 'antd';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { FaTrashAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { PlusOutlined, MinusCircleOutlined, LoadingOutlined } from '@ant-design/icons';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 
 import AppInput from '../../components/AppInput';
 
 import styles from './styles.module.css';
-import { imageListSeparator, routes } from '../../constants';
 import * as ActionTypes from '../../redux/actionTypes';
 import { maxProductImage, maxProductImageList } from '../AddProductPage';
-import { formatCurrency, getFormatImageSource, getImageListByString, readFile } from '../../utils';
+import { formatCurrency, readFile } from '../../utils';
 
 dayjs.extend(utc)
 

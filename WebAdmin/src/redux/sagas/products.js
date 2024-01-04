@@ -4,7 +4,7 @@ import { put, call, fork, select, takeLeading, takeLatest } from 'redux-saga/eff
 
 import * as ActionTypes from '../actionTypes';
 import { apiErrorHandler, createFile } from '../../utils';
-import { axiosClient, imageListSeparator, responseStatus, routes } from '../../constants';
+import { axiosClient, responseStatus, routes } from '../../constants';
 
 function* getProducts({ payload }) {
   try {

@@ -10,6 +10,7 @@
             .product-container {
                 gap: 15px;
                 flex-wrap: wrap;
+                flex: 1;
 
                 .item-container {
                     width: 23%;
@@ -49,6 +50,16 @@
                                 font-size: 12px;
                             }
                         }
+                    }
+                }
+
+                .empty-comment-container {
+                    gap: 15px;
+                    width: 100%;
+
+                    .empty-icon {
+                        height: 50px;
+                        width: 50px;
                     }
                 }
             }

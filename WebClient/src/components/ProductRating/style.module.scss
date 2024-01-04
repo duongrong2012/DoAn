@@ -42,6 +42,15 @@
 
                 }
             }
+
+            .empty-comment-container {
+                gap: 15px;
+
+                .empty-icon {
+                    height: 50px;
+                    width: 50px;
+                }
+            }
         }
 
         .more-rating {

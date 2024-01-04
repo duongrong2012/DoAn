@@ -10,6 +10,7 @@ import { ProductActions } from 'redux/slices/product';
 import FilterMenu, { FilterMenuProps } from 'components/FilterMenu';
 
 import styles from './style.module.scss';
+import images from 'assets';
 
 interface State {
 
@@ -17,11 +18,11 @@ interface State {
 
 export default function FilterPage() {
     const dispatch = useDispatch()
-    
+
     const [searchParams, setSearchParams] = useSearchParams();
 
     const totalProduct = useAppSelector((reduxState) => reduxState.product.totalProduct);
-    
+
     const productListByFilter = useAppSelector((reduxState) => reduxState.product.productListByFilter);
 
     const currentPage = React.useMemo(() => {
@@ -85,7 +86,7 @@ export default function FilterPage() {
                     onChange={onChangePagination}
                 />
                 <div className='product-container flex'>
-                    {productListByFilter.map((item) => (
+                    {productListByFilter.length !== 0 ? (productListByFilter.map((item) => (
                         <Link key={item._id} className='item-container column' to={routes.ProductDetail(item.slug).path}>
                             <img className='item-image' alt="" src={item.images[0].url} />
 
@@ -97,7 +98,12 @@ export default function FilterPage() {
                                 </div>
                             </div>
                         </Link>
-                    ))}
+                    ))) : (
+                        <div className='empty-comment-container center'>
+                            <img alt='' src={images.emptyIcon} className='empty-icon' />
+                            <div>Không tìm thấy sản phẩm</div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div >

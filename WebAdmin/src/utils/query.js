@@ -1,5 +1,3 @@
-import { History, Location } from 'history'
-
 export function getQueryStringValue(query, fieldName, defaultValue) {
     let value = query.get(fieldName)
 

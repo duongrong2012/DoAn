@@ -4,7 +4,7 @@ import utc from 'dayjs/plugin/utc';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { PlusOutlined } from '@ant-design/icons';
-import { Card, Table, Button, Input, Modal, Form, Select, Upload } from 'antd';
+import { Card, Table, Button, Input, Modal, Form, Upload } from 'antd';
 
 import styles from './styles.module.css';
 import * as ActionTypes from '../../redux/actionTypes';
@@ -30,18 +30,18 @@ const CategoryManagePage = () => {
     image: null,
   });
 
-  const onClickDelete = React.useCallback((item) => () => {
-    const modal = Modal.confirm({
-      maskClosable: false,
-      okButtonProps: { danger: true },
-      title: `Bạn có chắc chắn muốn xóa danh mục ${item.name}?`,
-      okText: 'Xác nhận',
-      cancelText: 'Hủy bỏ',
-      onOk: (c) => dispatch({ type: ActionTypes.DELETE_CATEGORY, payload: item })
-    });
+  // const onClickDelete = React.useCallback((item) => () => {
+  //   const modal = Modal.confirm({
+  //     maskClosable: false,
+  //     okButtonProps: { danger: true },
+  //     title: `Bạn có chắc chắn muốn xóa danh mục ${item.name}?`,
+  //     okText: 'Xác nhận',
+  //     cancelText: 'Hủy bỏ',
+  //     onOk: (c) => dispatch({ type: ActionTypes.DELETE_CATEGORY, payload: item })
+  //   });
 
-    modalRef.current = modal;
-  }, [dispatch]);
+  //   modalRef.current = modal;
+  // }, [dispatch]);
 
   // const onSearch = React.useCallback((text) => {
 
@@ -130,7 +130,7 @@ const CategoryManagePage = () => {
     )
   }, [addLoading, onBeforeUpload, onUploadChange, state.image])
 
-  const showCategoryModal = React.useCallback(async (title, actionType, initialValues = { categoryId: null, name: '', image: {} }) => {
+  const showCategoryModal = React.useCallback(async (title, actionType, initialValues = { categoryId: null, name: '', image: [] }) => {
     let modal;
 
     try {
@@ -297,7 +297,7 @@ const CategoryManagePage = () => {
         bodyStyle={{ padding: 0 }}
       >
         <Table
-          rowKey="id"
+          rowKey="_id"
           loading={loading}
           columns={columns}
           tableLayout="fixed"

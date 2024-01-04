@@ -1,4 +1,3 @@
-import { localStorageKey } from '../../constants';
 import * as ActionTypes from '../actionTypes';
 
 // const collapsed = localStorage.getItem(localStorageKey.SIDEBAR_COLLAPSED);

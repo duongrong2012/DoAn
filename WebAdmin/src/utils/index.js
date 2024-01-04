@@ -1,7 +1,4 @@
-import { put } from '@redux-saga/core/effects';
-
-import * as ActionTypes from '../redux/actionTypes';
-import { imageListSeparator, responseError } from '../constants';
+import { imageListSeparator } from '../constants';
 import { notification } from 'antd';
 
 export const formatCurrency = (text = '') => {

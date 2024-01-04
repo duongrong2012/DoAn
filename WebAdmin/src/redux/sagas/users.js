@@ -1,8 +1,8 @@
-import { put, call, takeLeading } from 'redux-saga/effects';
+import { put, takeLeading } from 'redux-saga/effects';
 
 import * as ActionTypes from '../actionTypes';
 import { apiErrorHandler } from '../../utils';
-import { axiosClient, responseStatus } from '../../constants';
+import { axiosClient } from '../../constants';
 
 function* getUserAction({ payload }) {
   try {

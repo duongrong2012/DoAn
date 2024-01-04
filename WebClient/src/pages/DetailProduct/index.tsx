@@ -92,10 +92,8 @@ const DetailProduct = () => {
     if (quantity > (productDetail?.quantity ?? 0)) {
       setState((prevState) => ({ ...prevState, productQuantity: productDetail?.quantity ?? 0 }))
     } else {
-
+      setState((prevState) => ({ ...prevState, productQuantity: quantity }))
     }
-
-    setState((prevState) => ({ ...prevState, productQuantity: quantity }))
   }, [productDetail?.quantity])
 
   const onClickBuyButton = React.useCallback(() => {

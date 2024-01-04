@@ -4,12 +4,12 @@ import utc from 'dayjs/plugin/utc';
 import { push } from 'connected-react-router';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Table, Button, Modal, Image, AutoComplete } from 'antd';
+import { Card, Table, Button, Image, AutoComplete } from 'antd';
 
 import styles from './styles.module.css';
 import { routes } from '../../constants';
 import * as ActionTypes from '../../redux/actionTypes';
-import { formatCurrency, getFormatImageSource } from '../../utils';
+import { formatCurrency } from '../../utils';
 import { getQueryStringValue } from '../../utils/query';
 import useQuery from '../../hooks/useQuery';
 
@@ -38,18 +38,18 @@ const ProductManagePage = () => {
     return getQueryStringValue(query, "limit", 50)
   }, [query])
 
-  const onClickRemove = React.useCallback((item) => () => {
-    const modal = Modal.confirm({
-      maskClosable: false,
-      okButtonProps: { danger: true },
-      title: `Bạn có chắc chắn muốn xóa sản phẩm ${item.name}?`,
-      okText: 'Xác nhận',
-      cancelText: 'Hủy bỏ',
-      onOk: () => dispatch({ type: ActionTypes.DELETE_PRODUCT, payload: item })
-    });
+  // const onClickRemove = React.useCallback((item) => () => {
+  //   const modal = Modal.confirm({
+  //     maskClosable: false,
+  //     okButtonProps: { danger: true },
+  //     title: `Bạn có chắc chắn muốn xóa sản phẩm ${item.name}?`,
+  //     okText: 'Xác nhận',
+  //     cancelText: 'Hủy bỏ',
+  //     onOk: () => dispatch({ type: ActionTypes.DELETE_PRODUCT, payload: item })
+  //   });
 
-    modalRef.current = modal;
-  }, [dispatch]);
+  //   modalRef.current = modal;
+  // }, [dispatch]);
 
   const onClickEdit = React.useCallback((item) => () => {
     dispatch(push(routes.PRODUCT_DETAIL(item._id).path));

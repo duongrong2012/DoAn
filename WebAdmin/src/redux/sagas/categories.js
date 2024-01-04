@@ -1,7 +1,7 @@
 import { call, put, all, takeLeading, delay } from 'redux-saga/effects';
 
 import * as ActionTypes from '../actionTypes';
-import { apiErrorHandler, createFile } from '../../utils';
+import { apiErrorHandler } from '../../utils';
 import { axiosClient, responseStatus } from '../../constants';
 
 function* getCategories() {

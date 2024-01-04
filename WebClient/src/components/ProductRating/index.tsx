@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Button } from 'antd';
 import { ratingListLimit } from '../../constants';
 import classNames from 'classnames';
+import images from 'assets';
 
 export interface Props {
     ratingList: Rating[],
@@ -23,7 +24,7 @@ export default function ProductRating({ ratingList, onClickMoreRating }: Props) 
         <div className={`${styles.productRatingContainer} column`}>
             <div className='label'>Đánh Giá Sản Phẩm</div>
             <div className='body-container column'>
-                {ratingList.map((item, index) => (
+                {ratingList.length !== 0 ? (ratingList.map((item, index) => (
                     <div className={classNames({
                         "item-container": true,
                         "flex": true,
@@ -39,7 +40,12 @@ export default function ProductRating({ ratingList, onClickMoreRating }: Props) 
                         </div>
                         <div className='item-time'>{moment(item.createdAt).format("DD-MM-YYYY")}</div>
                     </div>
-                ))}
+                ))) : (
+                    <div className='empty-comment-container center'>
+                        <img alt='' src={images.emptyIcon} className='empty-icon' />
+                        <div>Sản phẩm chưa có đánh giá nào</div>
+                    </div>
+                )}
             </div>
             {
                 isShowLoadButton && (

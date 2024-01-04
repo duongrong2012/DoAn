@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Tag, Table, Select, Button, Image } from 'antd';
 import { useParams } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import styles from './styles.module.css';
 import { formatCurrency } from '../../utils';
 import * as ActionTypes from '../../redux/actionTypes';
-import { routes, transactionStatusColor, transactionStatusLabel } from '../../constants';
+import { transactionStatusColor, transactionStatusLabel } from '../../constants';
 
 const OrderDetailPage = () => {
   let { orderId } = useParams();
