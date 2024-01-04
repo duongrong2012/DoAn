@@ -96,7 +96,7 @@ const ProductManagePage = () => {
       render: (id, item) => (
         <div>
           <Button type="primary" className={styles.buttonSeparator} onClick={onClickEdit(item)}>Chỉnh sửa</Button>
-          <Button type="primary" danger onClick={onClickRemove(item)}>Xóa</Button>
+          {/* <Button type="primary" danger onClick={onClickRemove(item)}>Xóa</Button> */}
         </div>
       )
     },

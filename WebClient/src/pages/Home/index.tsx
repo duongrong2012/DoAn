@@ -22,7 +22,6 @@ const HomePage = () => {
     dispatch(ProductActions.getProducts({ stateName: "topFiveProducts", limit: 5, page: 1, sort: "totalSold" }))
   }, [dispatch])
 
-
   return (
     <div className={`${styles.homePageContainer} column resolution`}>
       <ProductCarousel products={topFiveProducts} />

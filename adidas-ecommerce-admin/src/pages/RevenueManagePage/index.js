@@ -10,7 +10,9 @@ import { formatCurrency } from "../../utils";
 const RevenueManagePage = () => {
   const dispatch = useDispatch();
 
-  const budget = useSelector((state) => state.revenue.budgetList);
+  const revenue = useSelector((state) => state.revenue.revenue);
+  console.log(revenue)
+  const bestSellerProducts = useSelector((state) => state.revenue.bestSellerProducts);
 
   const yearbudget = useSelector((state) => state.revenue.yearBudgetList);
 
@@ -94,17 +96,18 @@ const RevenueManagePage = () => {
       render: (_, item, index) => index + 1,
     },
     {
-      title: "Tên sản phẩm",
+      title: <div className="center">Tên sản phẩm</div>,
       dataIndex: "name",
     },
     {
-      title: "Doanh số",
-      dataIndex: "quantity",
+      title: <div className="center">Tổng số sản phẩm bán được</div>,
+      dataIndex: "totalSold",
+      render: (text, item) => <div className="center">{item.totalSold} sản phẩm</div>
     },
     {
-      title: "Doanh thu",
+      title: <div className="center">Doanh thu</div>,
       dataIndex: "price",
-      render: (text) => formatCurrency(`${text} VNĐ`),
+      render: (text, item) => <div>  {formatCurrency(`${item.totalSold * item.price} VNĐ`)} </div>
     },
   ];
 
@@ -141,8 +144,7 @@ const RevenueManagePage = () => {
       >
         <Table
           rowKey="product_id"
-          dataSource={budget}
-          pagination={{ pageSize: 4 }}
+          dataSource={bestSellerProducts}
           columns={productIncomeColumns}
         />
       </Card>
@@ -156,7 +158,7 @@ const RevenueManagePage = () => {
           dataSource={yearbudget}
           pagination={{ pageSize: 4 }}
           columns={monthYearIncomeColumns}
-          rowKey={(record) => `${+record.price}_${Date.now()}`}
+          rowKey={(record) => `${+ record.price}_${Date.now()}`}
         />
       </Card>
 

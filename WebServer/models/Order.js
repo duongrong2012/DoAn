@@ -1,11 +1,6 @@
 const { Schema, model } = require('mongoose');
 const mongooseLeanGetters = require('mongoose-lean-getters');
-
-const OrderStatus = {
-    PROCESSING: 'PROCESSING',
-    DELIVERING: 'DELIVERING',
-    DELIVERED: 'DELIVERED',
-}
+const { OrderStatus } = require('../utils/constants');
 
 const orderSchema = new Schema({
     user: {

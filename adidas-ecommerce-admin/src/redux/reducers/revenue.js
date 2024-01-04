@@ -37,7 +37,7 @@ export default function budgetReducer(state = defaultState, action) {
       return {
         ...state,
         bestSellerProductsLoading: false,
-        bestSellerProducts: action.payload,
+        bestSellerProducts: action.payload.data,
       };
     case ActionTypes.GET_BEST_SELLER_PRODUCTS_FAILED:
       return {

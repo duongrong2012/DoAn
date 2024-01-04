@@ -31,5 +31,10 @@ module.exports.multerErrorMessages = {
 module.exports.mongooseCastErrorField = {
   genre: 'Thể loại'
 }
+module.exports.OrderStatus = {
+  PROCESSING: 'PROCESSING',
+  DELIVERING: 'DELIVERING',
+  DELIVERED: 'DELIVERED',
+}
 
 module.exports.DefaultPageLimit = 10

@@ -226,13 +226,13 @@ const CategoryManagePage = () => {
             >
               Chỉnh sửa
             </Button>
-            <Button
+            {/* <Button
               danger
               type="primary"
               onClick={onClickDelete(item)}
             >
               Xóa
-            </Button>
+            </Button> */}
           </div>
         )
       }
