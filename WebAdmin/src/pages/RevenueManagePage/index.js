@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Table, Button, DatePicker } from "antd";
 import { Line } from "@ant-design/charts";
+import moment from 'moment'
 // My comment
 import styles from "./styles.module.css";
 import * as ActionTypes from "../../redux/actionTypes";
@@ -11,10 +12,8 @@ const RevenueManagePage = () => {
   const dispatch = useDispatch();
 
   const revenue = useSelector((state) => state.revenue.revenue);
-  console.log(revenue)
-  const bestSellerProducts = useSelector((state) => state.revenue.bestSellerProducts);
 
-  const yearbudget = useSelector((state) => state.revenue.yearBudgetList);
+  const bestSellerProducts = useSelector((state) => state.revenue.bestSellerProducts);
 
   const [state, setState] = React.useState({
     viewType: 'month',
@@ -26,28 +25,14 @@ const RevenueManagePage = () => {
       ...prevState,
       yearSelected: dateString
     }))
-    dispatch({
-      type: ActionTypes.GET_YEARBUDGET,
-      payload: {
-        viewType: state.viewType,
-        dateString
-      }
-    });
-  }, [dispatch, state.viewType]);
+  }, []);
 
   const onClickChange = React.useCallback((viewType) => () => {
     setState((prevState) => ({
       ...prevState,
       viewType
     }))
-    dispatch({
-      type: ActionTypes.GET_YEARBUDGET,
-      payload: {
-        viewType,
-        dateString: state.yearSelected
-      }
-    });
-  }, [dispatch, state.yearSelected]);
+  }, []);
 
   const sharedValues = React.useMemo(() => {
     const values = {
@@ -64,7 +49,7 @@ const RevenueManagePage = () => {
 
     if (state.viewType === 'month') {
       values.datepickerDisabled = false;
-      values.monthYearIncomeTableTitle = 'Tháng';
+      values.monthYearTableTitle = 'Tháng';
       values.chartTitle = 'Tháng';
       values.monthYearIncomeCard = 'Bảng doanh thu theo tháng';
       values.datepickerPlaceholder = 'Chọn năm';
@@ -80,7 +65,7 @@ const RevenueManagePage = () => {
   const monthYearIncomeColumns = [
     {
       title: sharedValues.monthYearTableTitle,
-      dataIndex: state.viewType,
+      render: (text, item) => <div>{item.month}</div>
     },
     {
       title: "Doanh thu",
@@ -112,7 +97,7 @@ const RevenueManagePage = () => {
   ];
 
   const config = {
-    data: yearbudget,
+    data: revenue,
     xField: state.viewType,
     yField: "price",
     point: { size: 5, shape: "diamond" },
@@ -121,19 +106,15 @@ const RevenueManagePage = () => {
   };
 
   React.useEffect(() => {
-    dispatch({ type: ActionTypes.GET_REVENUE });
+    dispatch({
+      type: ActionTypes.GET_REVENUE, payload: {
+        type: state.viewType.toUpperCase(),
+        year: state.yearSelected
+      }
+    });
+
     dispatch({ type: ActionTypes.GET_BEST_SELLER_PRODUCTS });
-
-
-    // const now = new Date()
-    // dispatch({
-    //   type: ActionTypes.GET_YEARBUDGET,
-    //   payload: {
-    //     dateString: now.getFullYear(),
-    //     viewType: 'month'
-    //   }
-    // });
-  }, [dispatch]);
+  }, [dispatch, state.viewType, state.yearSelected]);
 
   return (
     <div className={styles.container}>
@@ -155,10 +136,9 @@ const RevenueManagePage = () => {
         className={(styles.customerDetailCard, styles.cardSeparator)}
       >
         <Table
-          dataSource={yearbudget}
-          pagination={{ pageSize: 4 }}
+          dataSource={revenue}
           columns={monthYearIncomeColumns}
-          rowKey={(record) => `${+ record.price}_${Date.now()}`}
+          pagination={false}
         />
       </Card>
 
@@ -176,6 +156,7 @@ const RevenueManagePage = () => {
               disabled={sharedValues.datepickerDisabled}
               placeholder={sharedValues.datepickerPlaceholder}
               onChange={onDatePickerChange}
+              value={moment(state.yearSelected, 'yyyy')}
             />
 
             <Button

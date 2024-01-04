@@ -21,9 +21,11 @@ function* getBestSellerProducts() {
   }
 }
 
-function* getRevenue() {
+function* getRevenue(action) {
   try {
-    const { data } = yield axiosClient.get('/quan-tri-vien/doanh-thu');
+    const { payload } = action;
+
+    const { data } = yield axiosClient.get('/quan-tri-vien/doanh-thu', { params: payload });
 
     yield put({ type: ActionTypes.GET_REVENUE_SUCCESS, payload: data.results });
   } catch (error) {
